@@ -7,21 +7,21 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 /**
- * 学院-规则关联表
+ * 项目-规则关联表
  * @author 章家宝
  *
  */
 @Entity
-@Table(name = "t_ruleCollege")
-public class RuleCollege {
+@Table(name = "t_projectCollege")
+public class ProjectCollege {
 
 	@Id
 	@GeneratedValue
 	private Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name = "ruleId")
-	private Rule rule;
+	@JoinColumn(name = "projectId")
+	private Project project;
 	
 	@ManyToOne
 	@JoinColumn(name = "collegeId")
@@ -35,12 +35,12 @@ public class RuleCollege {
 		this.id = id;
 	}
 
-	public Rule getRule() {
-		return rule;
+	public Project getProject() {
+		return project;
 	}
 
-	public void setRule(Rule rule) {
-		this.rule = rule;
+	public void setProject(Project project) {
+		this.project = project;
 	}
 
 	public College getCollege() {
@@ -53,7 +53,7 @@ public class RuleCollege {
 
 	@Override
 	public String toString() {
-		return "RuleCollege [id=" + id + ", rule=" + rule + ", college=" + college + "]";
+		return "ProjectCollege [id=" + id + ", project=" + project + ", college=" + college + "]";
 	}
 	
 	

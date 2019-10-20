@@ -169,6 +169,14 @@
 				padding-left:10px;
 			}
 			/* 右边信息结束 */
+			.layui-form-item .department{
+				width:265px;
+				margin-bottom:5px;
+				margin-right:6px;
+			}
+			.firstDepartment{
+				margin-top:5px;
+			}
 		</style>
 	</head>
 	<body>
@@ -179,6 +187,8 @@
     			<label class="layui-form-label">项目名称</label>
     			<div class="layui-input-block">
       				<input type="text" name="name" autocomplete="off" placeholder="请输入标题" class="layui-input tip-input">
+    			</div>
+    			<div class="layui-inline department1 firstDepartment">
     			</div>
   			</div>
     		<div class="layui-form-item layui-form-text">
@@ -275,6 +285,29 @@
 		
 		// 请求后台数据,比赛项目数据
 		let infoData = []; 
+		$.post("/admin/college/combobox",
+				function (res){
+					for(let prop in res){
+						if("广州工商学院" === res[prop]){
+							continue;
+						}
+						$(".department1").append('<div class=' + 'layui-inline' + '><label class="layui-form-label department">'+res[prop] + "可报名人数" +'</label>'+
+								'<div class='+'layui-input-inline'+'>'+'<input type='+'number'+' name='+'studentNumber' +
+								'autocomplete='+ 'off' + ' class=' + 'layui-input ' + '></div></div>');
+					}
+					
+				});
+		$.post("/admin/department/combobox",
+				function (res){
+					for(let prop in res){
+						$(".department1").append('<div class=' + 'layui-inline' + '><label class="layui-form-label department">'+res[prop]+ "可报名人数" +'</label>'+
+								'<div class='+'layui-input-inline'+'>'+'<input type='+'number'+' name='+'studentNumber' +
+								'autocomplete='+ 'off' + ' class=' + 'layui-input ' + '></div></div>');
+						
+						
+					}
+					
+				});
 		$.post("/admin/project/getPorjectInfo", {},
 			function(res) {
 				let i = 0; // 初始化下标
@@ -421,7 +454,7 @@
 						    	      //多窗口模式，层叠置顶
 						    	      layer.open({
 						    	        type: 1 //此处以iframe举例
-						    	        ,title: '添加老师信息'
+						    	        ,title: '添加项目'
 						    	        ,area: ['700px', '520px']
 						    	        ,shade: 0
 						    	        ,maxmin: true
@@ -560,7 +593,7 @@
 				$(".projectInfo").css({
 					"display": "block"
 				}); // 项目表格显示
-				layer.msg(JSON.stringify(obj.data));
+				//layer.msg(JSON.stringify(obj.data));
 					}
 				});
 			})

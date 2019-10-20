@@ -34,29 +34,25 @@
 							<div class="layui-inline">
 								<label class="layui-form-label">学院</label>
 								<div class="layui-input-inline">
-									<select name="quiz1" class="form-theme">
+									<select name="collegeName" class="form-theme">
 										<option value="">请选择</option>
-										<option value="花都"></option>
-										<option value="三水">三水校区</option>
 									</select>
 								</div>
 							</div>
 							<div class="layui-inline">
 							<label class="layui-form-label">系部</label>
 								<div class="layui-input-inline">
-									<select name="quiz1" class="form-theme">
+									<select name="departmentName" class="form-theme">
 										<option value="">请选择</option>
-										<option value="花都">花都校区</option>
-										<option value="三水">三水校区</option>
 									</select>
 								</div>
 							</div>
 							<label class="layui-form-label">校区</label>
 							<div class="layui-input-inline">
-								<select name="quiz1" class="form-theme">
+								<select name="address" class="form-theme">
 									<option value="">请选择</option>
-									<option value="花都">花都校区</option>
-									<option value="三水">三水校区</option>
+									<option value="花都校区">花都校区</option>
+									<option value="三水校区">三水校区</option>
 								</select>
 							</div>
 						</div>
@@ -71,12 +67,12 @@
 						</div>
 						<div class="form-infor">
 							<ul class="row">
-								<li class="col-md-3 text-center input-first"><i class="number addInfo">1</i><input type="text" class="layui-input" id="exampleInputName2"
+								<li class="col-md-3 text-center input-first"><i class="number addInfo">1</i><input type="text" name="name" class="layui-input" id="exampleInputName2"
 									 placeholder="姓名"></li>
-								<li class="col-md-3 text-center"><input type="text" class="layui-input" id="exampleInputName2" placeholder="班级"></li>
-								<li class="col-md-3 text-center"><input type="text" class="layui-input" id="exampleInputName2" placeholder="年级"></li>
+								<li class="col-md-3 text-center"><input name="clazz" type="text" class="layui-input" id="exampleInputName2" placeholder="班级"></li>
+								<li class="col-md-3 text-center"><input name="grade" type="text" class="layui-input" id="exampleInputName2" placeholder="年级"></li>
 								<li class="col-md-1 text-center">
-									<input list="browsers" class="form-control">
+									<input list="browsers" name="sexName" class="form-control layui-input">
 									<datalist id="browsers">
 										<option value="男">
 										<option value="女">
@@ -85,11 +81,12 @@
 								<li class="col-md-2 text-center add-box"><i class="addInfo add" data-index="1" onclick="addStudent(this)">+</i></li>
 							</ul>
 						</div>
-
+						<input type="hidden" name="studentJson" class="studentJson" />
 						<div class="box-spaing">
 							<button type="button" class="preservation">提交名单</button>
 							<button type="button" class="layui-btn-disabled next">下一步</button>
 						</div>
+						
 					</form>
 				</div>
 			</section>

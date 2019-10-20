@@ -5,7 +5,7 @@
 		    	    	{},
 		    	    	function (res) {
 		    	    		for(let prop in res) {
-		    	    	    		$(".form-theme").eq(0).append(`<option value=` + prop + `>` + res[prop] +`</option>`)
+		    	    	    		$(".form-theme").eq(0).append(`<option value=` + res[prop] + `>` + res[prop] +`</option>`)
 		    	    		};
 		    	    		form.render();
 		    	 });
@@ -14,7 +14,7 @@
 		    	    	{},
 		    	    	function (res) {
 		    	    		for(let prop in res) {
-		    	    	    		$(".form-theme").eq(1).append(`<option value=` + prop + `>` + res[prop] +`</option>`)
+		    	    	    		$(".form-theme").eq(1).append(`<option value=` + res[prop] + `>` + res[prop] +`</option>`)
 		    	    		};
 		    	    		form.render();
 		    	    	});
@@ -45,14 +45,13 @@ let addCode =
 let addButton = `<i class="addInfo add" onclick="addStudent(this)">+</i>`;
 let valueArr = []; // 定义一个预先存储所有学生个人信息的数组，当为空的时候不能赋值给infoArr
 let infoArr = []; //定义一个存储所有学生个人信息的数组
+let commonInfo = [];
 let contrast = []; // 定义一个对比存储学生信息的数组，用于提交学生信息后再次修改提交，弹出提交提示框
 let tip = $(".tip"); // 提示框
 let infoObj = {
-	school : "", //学校
-	pastern : "", // 系部
-	leader : "", // 领队
-	campus : "", //校区
-	coach : "" // 教练
+	address : "", //校区
+	college : "", // 系部
+	department : "", // 领队
 };
 
 function preserInfo() { // 当用户点击保存时，把所有的数据保存
@@ -60,52 +59,38 @@ function preserInfo() { // 当用户点击保存时，把所有的数据保存
 	for(let i = 0; i < info.length; i++) {
 		if(info.eq(i).val() != "") {
 			if (i === 0) {
-				infoObj.school = info.eq(i).val();
+				infoObj.address = info.eq(i).val();
 			} else if (i === 1) {
-				infoObj.pastern = info.eq(i).val();
+				infoObj.college = info.eq(i).val();
 			} else if (i === 2) {
-				infoObj.leader = info.eq(i).val();
-			} else if (i === 3) {
-				infoObj.coach = info.eq(i).val();
-			} else if (i === 4) {
-				infoObj.campus = info.eq(i).val();
+				infoObj.department = info.eq(i).val();
 			}
 		};
 	};
-	valueArr.push(infoObj)
+	//valueArr.push(infoObj)
+	commonInfo.push(infoObj)
 	for (var i = 0; i < $(".form-infor").length; i++) {
 		let flag = true; // 判断学生信息是否填写完整
 		var valueObj = {
-			name: "", // 姓名
-			Class: "", // 班级
+			trueName: "", // 姓名
+			clazz: "", // 班级
 			grade: "", // 年级
-			gender: "" // 性别
+			sexName: "" // 性别
 		}; // 定义一个存储个人学生信息的对象
 		var infoValue = $(".form-infor").eq(i).find(".layui-input");
-		
 		for (var j = 0; j < infoValue.length; j++) { // 遍历学生姓名，班级，年级，性别
-			// if(){ // 儅用戶點擊了一次提交表單，且退出提示，第二次提交表單時，比對學生信息是否一樣，不一樣則進行正常提交
-			// 	tipText.text("是否提交学生名单！");
-			// 	$('.submitName').text("提交");
-			// 	$('.submitName').attr({
-			// 		"onclick" : "",
-			// 		"data-type" : "loading"
-			// 	})
-			// }
 			if (infoValue.eq(j).val() != "") { // 当不为空时，直接赋值
 				console.log("第二次赋值的对比数组=", contrast);
 				if (j === 0) {
-					valueObj.name = infoValue.eq(j).val();
-					
+					valueObj.trueName = infoValue.eq(j).val();
 				} else if (j === 1) {
-					valueObj.Class = infoValue.eq(j).val();
+					valueObj.clazz = infoValue.eq(j).val();
 				} else if (j === 2) {
 					valueObj.grade = infoValue.eq(j).val();
 				} else if (j === 3) {
-					valueObj.gender = infoValue.eq(j).val();
+					valueObj.sexName = infoValue.eq(j).val();
 				}
 			} else { // 当有空没填写时
-
 				flag = false; // 预数组不存信息
 				infoValue.eq(j).css({ // 把为空的输入框变成红色
 					"border": "1px solid #f00",
@@ -120,7 +105,6 @@ function preserInfo() { // 当用户点击保存时，把所有的数据保存
 				alert("学生信息未完善！"); // 并提示未填写
 				break; // 跳出小循环
 			};
-
 		};
 		if (flag) { // 如果填写完整，则放进预数组；
 			valueArr.push(valueObj); // 把个人的学生信息放进数组
@@ -134,9 +118,9 @@ function preserInfo() { // 当用户点击保存时，把所有的数据保存
 		tip.css("display", "block"); // 提示框显示
 		background.css("display", "block"); // 背景虛化
 	};
-
-	contrast = [...valueArr]; // 赋值给对比用得数组
 	console.log(infoArr);
+	console.log(commonInfo);
+	contrast = [...valueArr]; // 赋值给对比用得数组
 };
 
 // 添加元素事件
@@ -201,7 +185,6 @@ function closeTip() {
 
 
 	for (let i = 0; i < infoNum.length; i++) { // 清空学生信息
-		console.log(infoNum)
 		if (i !== 0) { // 不是第一条时清空
 			infoNum.eq(i).remove();
 		} else { // 第一条时添加事件
@@ -228,7 +211,12 @@ layui.use('element', function() {
 	//触发事件
 	var active = {
 		loading: function(othis) {
-			console.log("执行ajax,发送了学生信息");
+			$.post("/admin/student/save",{address:commonInfo[0].address,collegeName:commonInfo[0].college,
+				departmentName : commonInfo[0].department, studentJson:JSON.stringify(valueArr)},function(res){
+					if(!res.success){
+						alert(res.errorInfo);
+					}
+			});
 			// 当提示框消失时，解除下一步按钮得禁用，清空学生信息
 			$(".next").attr({
 				"class": "next",
@@ -299,9 +287,6 @@ layui.use('element', function() {
 			console.log(infoArr);
 		}
 	};
-
-
-
 	$('.submitName').on('click', function() {
 		console.log(prog)
 		prog.css("display", "block"); // 进度条显示

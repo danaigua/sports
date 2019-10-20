@@ -8,16 +8,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "t_ruleDepartment")
-public class RuleDepartment {
+@Table(name = "t_projectDepartment")
+public class ProjectDepartment {
 
 	@Id
 	@GeneratedValue
 	private Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name = "ruleId")
-	private Rule rule;
+	@JoinColumn(name = "projectId")
+	private Project project;
 	
 	@ManyToOne
 	@JoinColumn(name = "departmentId")
@@ -31,12 +31,12 @@ public class RuleDepartment {
 		this.id = id;
 	}
 
-	public Rule getRule() {
-		return rule;
+	public Project getProject() {
+		return project;
 	}
 
-	public void setRule(Rule rule) {
-		this.rule = rule;
+	public void setProject(Project project) {
+		this.project = project;
 	}
 
 	public Department getDepartment() {

@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * 规则实体类
@@ -41,6 +42,12 @@ public class Rule {
 	
 	@Column(length = 1000)
 	private String remarks;//备注
+	
+	@Transient
+	private String isSexName;
+	
+	@Transient
+	private String isDepartmentName;
 
 	public Integer getId() {
 		return id;
@@ -136,6 +143,22 @@ public class Rule {
 
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+
+	public String getIsSexName() {
+		return isSexName;
+	}
+
+	public void setIsSexName(String isSexName) {
+		this.isSexName = isSexName;
+	}
+
+	public String getIsDepartmentName() {
+		return isDepartmentName;
+	}
+
+	public void setIsDepartmentName(String isDepartmentName) {
+		this.isDepartmentName = isDepartmentName;
 	}
 
 	

@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import vip.wukong.entity.College;
 import vip.wukong.entity.Department;
 import vip.wukong.entity.Log;
@@ -23,8 +26,8 @@ import vip.wukong.service.CollegeService;
 import vip.wukong.service.DepartmentService;
 import vip.wukong.service.LogService;
 import vip.wukong.service.ProjectService;
-import vip.wukong.service.RuleCollegeService;
-import vip.wukong.service.RuleDepartmentService;
+import vip.wukong.service.ProjectCollegeService;
+import vip.wukong.service.ProjectDepartmentService;
 import vip.wukong.service.RuleService;
 import vip.wukong.service.StudentProjectService;
 import vip.wukong.service.StudentService;
@@ -62,10 +65,10 @@ public class StudentAdminController {
 	private RuleService ruleService;
 	
 	@Resource
-	private RuleCollegeService ruleCollegeService;
+	private ProjectCollegeService ruleCollegeService;
 	
 	@Resource
-	private RuleDepartmentService ruleDepartmentService;
+	private ProjectDepartmentService ruleDepartmentService;
 	/**
 	 * 获取排序之后的学生
 	 * @param projectId
@@ -583,8 +586,45 @@ public class StudentAdminController {
 	@RequestMapping("/save")
 	public Map<String, Object> save(Student student,
 			@RequestParam(value = "field", required =false) String field,
-			@RequestParam(value = "value", required = false) String value) throws Exception{
+			@RequestParam(value = "value", required = false) String value,
+			@RequestParam(value = "address", required = false) String address,
+			@RequestParam(value = "collegeName", required = false) String collegeName,
+			@RequestParam(value = "departmentName", required = false) String departmentName,
+			@RequestParam(value = "studentJson", required = false) String studentJson) throws Exception{
 		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			if(StringUtils.isNotEmpty(studentJson)) {
+				Gson gson = new Gson();
+				List<Student> studentList = gson.fromJson(studentJson, new TypeToken<List<Student>>() {}.getType());
+				for (Student student2 : studentList) {
+					if(StringUtils.isNotEmpty(student2.getTrueName())) {
+						student2.setName(student2.getTrueName());
+					}
+					student2.setAddr(address);
+					student2.setCollege(collegeName);
+					student2.setDepartment(departmentName);
+					if(StringUtils.isNotEmpty(student2.getSexName())) {
+						if("男".equals(student2.getSexName())) {
+							student2.setSex(1);
+						}else if("女".equals(student2.getSexName())) {
+							student2.setSex(2);
+						}
+					}
+					//如果学院跟系部冲突，则系部设置为空
+					if(StringUtils.isNotEmpty(student2.getCollege()) && (!"广州工商学院".equals(student2.getCollege()))) {
+						student2.setDepartment("");
+					}
+					studentService.save(student2);
+				}
+				map.put("success", true);
+				return map;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			map.put("success", false);
+			map.put("errorInfo", "格式错误，请重新输入正确格式的学生信息！");
+			return map;
+		}
 		if(student.getId() != null) {
 			Student oldStudent = studentService.findById(student.getId());
 			if("name".equals(field)) {
@@ -632,7 +672,6 @@ public class StudentAdminController {
 			studentService.save(oldStudent);
 			logService.save(new Log(Log.UPDATE_ACTION, "修改学生" + oldStudent));
 		}else {
-			
 			studentService.save(student);
 			logService.save(new Log(Log.ADD_ACTION, "添加学生" + student));
 		}

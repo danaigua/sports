@@ -17,8 +17,8 @@ import vip.wukong.service.RuleService;
 import vip.wukong.service.DepartmentService;
 import vip.wukong.service.LogService;
 import vip.wukong.service.ProjectService;
-import vip.wukong.service.RuleCollegeService;
-import vip.wukong.service.RuleDepartmentService;
+import vip.wukong.service.ProjectCollegeService;
+import vip.wukong.service.ProjectDepartmentService;
 import vip.wukong.service.StudentService;
 /**
  * 规则控制层
@@ -45,10 +45,10 @@ public class RuleAdminController {
 	private ProjectService projectService;
 	
 	@Resource
-	private RuleCollegeService ruleCollegeService;
+	private ProjectCollegeService ruleCollegeService;
 	
 	@Resource
-	private RuleDepartmentService ruleDepartmentService;
+	private ProjectDepartmentService ruleDepartmentService;
 	
 	/**
 	 * 列出所有的规则名称	combobox用到
@@ -100,22 +100,48 @@ public class RuleAdminController {
 				}else if("isSex".equals(field)) {
 					i = Integer.parseInt(value);
 					r.setIsSex(i);
+				}else if("isSexName".equals(field)) {
+					if("是".equals(value)) {
+						r.setIsSex(1);
+					}else if("否".equals(value)) {
+						r.setIsSex(2);
+					}else {
+						map.put("success", false);
+						map.put("errorInfo", "该选项只能填是或者否！");
+						return map;
+					}
 				}else if("isDepartment".equals(field)) {
 					i = Integer.parseInt(value);
 					r.setIsDepartment(i);
+				}else if("isDepartmentName".equals(field)) {
+					if("是".equals(value)) {
+						r.setIsDepartment(1);
+					}else if("否".equals(value)) {
+						r.setIsDepartment(2);
+					}else {
+						map.put("success", false);
+						map.put("errorInfo", "该选项只能填是或者否！");
+						return map;
+					}
 				}else if("groupNum".equals(field)) {
+					i = Integer.parseInt(value);
+					r.setGroupNum(i);
+				}else if("remarks".equals(field)) {
 					i = Integer.parseInt(value);
 					r.setGroupNum(i);
 				}
 				ruleService.save(r);
 				logService.save(new Log(Log.UPDATE_ACTION, "修改一条规则" + r));
+				map.put("success", true);
+				return map;
 			}catch (Exception e) {
 				map.put("success", false);
-				map.put("error", "数据转换出现异常，请正确输入数据");
+				map.put("errorInfo", "数据转换出现异常，请正确输入数据");
 				return map;
 			}
 			
 		}
+		map.put("success", true);
 		return map;
 	}
 	/**
@@ -126,6 +152,19 @@ public class RuleAdminController {
 	@RequestMapping("/list")
 	public Map<String, Object> list() throws Exception{
 		Map<String, Object> map = new HashMap<String, Object>();
+		List<Rule> ruleList = ruleService.listAll(null, Direction.ASC, "id");
+		for (Rule rule : ruleList) {
+			if(rule.getIsDepartment() == 1) {
+				rule.setIsDepartmentName("是");
+			}else if(rule.getIsDepartment() == 2) {
+				rule.setIsDepartmentName("否");
+			}
+			if(rule.getIsSex() == 1) {
+				rule.setIsSexName("是");
+			}else if(rule.getIsSex() == 2) {
+				rule.setIsSexName("否");
+			}
+		}
 		map.put("code", 0);
 		map.put("msg", "");
 		map.put("data", ruleService.listAll(null, Direction.ASC, "id"));
@@ -140,9 +179,8 @@ public class RuleAdminController {
 	public Map<String, Object> delete(Integer id) throws Exception{
 		Map<String, Object> map = new HashMap<String, Object>();
 		logService.save(new Log(Log.DELETE_ACTION, "删除规则" + ruleService.findById(id)));
-		ruleCollegeService.deleteByRuletId(id);
-		ruleDepartmentService.deleteByRuletId(id);
 		ruleService.delete(id);
+		map.put("success", true);
 		return map;
 	}
 }

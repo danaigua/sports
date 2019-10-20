@@ -29,7 +29,7 @@
 		width:1000px;
 		margin: auto 70px;
 	}
-.submit-box{
+	.submit-box{
 		padding-left:87px;
 	}
 	.teach-info{
@@ -49,7 +49,7 @@
 		  		<div class="layui-inline">
       				<label class="layui-form-label">项目</label>
       				<div class="layui-input-inline">
-      				<select name="address" lay-filter="aihao" class="statement">
+      				<select name="projectId" lay-filter="aihao" class="statement">
         					<option value="">请选择项目</option>
         					
       				</select>
@@ -59,16 +59,24 @@
 				<div class="layui-inline">
       				<label class="layui-form-label">规则</label>
       				<div class="layui-input-inline">
-      				<select name="address" lay-filter="aihao" class="statement">
+      				<select name="ruleId" lay-filter="aihao" class="statement">
         					<option value="">请选择规则</option>
         					
+      				</select>
+      				</div>
+    			</div>
+    			<div class="layui-inline">
+      				<label class="layui-form-label">校区</label>
+      				<div class="layui-input-inline">
+      				<select name="address" lay-filter="aihao" class="statement">
+        					<option value="三水校区">三水校区</option>
+        					<option value="花都校区">花都校区</option>
       				</select>
       				</div>
     			</div>
     			<div class="layui-inline submit-box" id="layerDemo">
    				 	<button type="button" lay-submit class="layui-btn" lay-filter="LAY-user-front-search">生成</button>
    				 	<button type="button" lay-submit class="layui-btn" data-method="setTop" lay-filter="LAY-user-front-search">添加规则</button>
-   				 	<button type="button" lay-submit class="layui-btn" lay-filter="LAY-user-front-search">导出</button>
    				</div>
     	   </div>
 		</form>
@@ -80,18 +88,15 @@
 	<!-- 提示框表单 -->
 		<form class="layui-form layui-form-pane teach-info" style="display:none" action="">
 			 <div class="layui-form-item">
-    			<label class="layui-form-label sex">项目名称</label>
+    			<label class="layui-form-label sex">规则名称</label>
     			<div class="layui-input-inline">
-     				 <select name="quiz1" class="tip-input">
-       					 <option value="" selected>请选择</option>
-        				 
-      				</select>
+     				<input type="name" autocomplete="off" class="layui-input tip-input">
     			</div>
   			</div>
   			<div class="layui-form-item">
     			<label class="layui-form-label sex">是否按性别分组</label>
     			<div class="layui-input-inline">
-     				 <select name="quiz1" id="asdf" onchange="changeValue()" class="tip-input">
+     				 <select name="isSex" lay-filter="isSex" onchange="changeValue()" class="tip-input">
        					 <option value="" selected>请选择</option>
         				 <option value="1">是</option>
        					 <option value="2">否</option>
@@ -99,7 +104,7 @@
     			</div>
     			<label class="layui-form-label sex">是否按系/院分组</label>
     			<div class="layui-input-inline">
-     				 <select name="quiz1" class="tip-input">
+     				 <select name="isDepartment" class="tip-input">
        					 <option value="" selected>请选择</option>
         				 <option value="1">是</option>
        					 <option value="2">否</option>
@@ -107,80 +112,51 @@
     			</div>
     		</div>
   			<div class="layui-form-item">
-    			<label class="layui-form-label">所属系部</label>
-    			<div class="layui-input-inline">
-     				 <select name="quiz1" class="tip-input">
-       					 <option value="" selected>请选择省</option>
-        				 <option value="浙江">计算机与科学系</option>
-       					 <option value="你的工号">会计系</option>
-       					 <option value="你最喜欢的老师">工商系</option>
-      				</select>
-    			</div>
-    			<label class="layui-form-label">所属学院</label>
-    			<div class="layui-input-inline">
-     				 <select name="quiz1" class="tip-input">
-       					 <option value="" selected>请选择省</option>
-        				 <option value="浙江">广州工商学院</option>
-       					 <option value="你的工号">二级学院</option>
-       					 <option value="你最喜欢的老师">国际学院</option>
-      				</select>
-    			</div>
     		</div>
     		<div class="layui-form-item">
     			<div class="layui-inline">
       				<label class="layui-form-label">组数</label>
       				<div class="layui-input-inline">
-       			 		<input type="number" name="studentNumber"  autocomplete="off" class="layui-input">
+       			 		<input type="number" name="groupNum"  autocomplete="off" class="layui-input tip-input">
       				</div>
     			</div>
-    			<div class="layui-inline">
+    			<div class="layui-inline first">
       				<label class="layui-form-label">男生人数</label>
       				<div class="layui-input-inline">
-       			 		<input type="number" name="manNumber"  autocomplete="off" class="layui-input">
+       			 		<input type="number" name="boyNum"  autocomplete="off" class="layui-input tip-input">
       				</div>
     			</div>
-    			<div class="layui-inline">
+    			<div class="layui-inline first">
       				<label class="layui-form-label">女生人数</label>
       				<div class="layui-input-inline">
-       			 		<input type="number" name="studentNumber"  autocomplete="off" class="layui-input">
+       			 		<input type="number" name="girlNum"  autocomplete="off" class="layui-input tip-input">
       				</div>
     			</div>
-    			<div class="layui-inline">
+    			<div class="layui-inline second">
       				<label class="layui-form-label">每组人数</label>
       				<div class="layui-input-inline">
-       			 		<input type="number" name="studentNumber"  autocomplete="off" class="layui-input">
+       			 		<input type="number" name="studentNum"  autocomplete="off" class="layui-input tip-input">
       				</div>
     			</div>
     		</div>
     		<div class="layui-form-item layui-form-text">
     			<label class="layui-form-label">备注</label>
    				 <div class="layui-input-block">
-      				<textarea placeholder="请输入内容" class="layui-textarea tip-input"></textarea>
+      				<textarea placeholder="请输入内容" name="remarks" class="layui-textarea tip-input"></textarea>
     			</div>
   			</div>
   			
 		</form>
 		<script src="../static/jquery/jquery.js"></script>
 <script>
-function changeValue(){
-	console.log("触发")
-	var obj = document.getElementById('asdf'); //定位id
-	var index = obj.selectedIndex; // 选中索引
-	var value = obj.options[index].value; // 选中值
-	console.log(value)
-}
-
-	
 		// 请求数据获取项目
 		$.post("/admin/project/combobox",
 		function (res){
 			for(let prop in res){
 				$(".statement").eq(0).append(`<option value=` + prop + `>` + res[prop] +`</option>`);
-				$(".tip-input").eq(0).append(`<option value=` + prop + `>` + res[prop] +`</option>`);
 			}
 			
 		});
-		
 		// 请求数据获取规则
 		$.post("/admin/rule/combobox",
 				function (res){
@@ -189,12 +165,9 @@ function changeValue(){
 					}
 					
 				});
-
-
 //添加规则
 layui.use('layer', function(){ //独立版的layer无需执行这一句
 	  var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
-	  
 	  //触发事件
 	  var active = {
 	    setTop: function(){
@@ -211,32 +184,41 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
 	          ,300
 	        ] 
 	        ,content: $(".teach-info")
-	        ,btn: ['提交', '关闭'] //只是为了演示
+	        ,btn: ['提交', '关闭'] 
 	        ,yes: function(){
 	          let value = [];
 	          for(let i = 0; i < $(".tip-input").length; i ++){
 	        	  value[i] = $(".tip-input").eq(i).val();
+	        	  if(i == 3 && (value[i]==null || value[i]=="")){
+	        		  value[i] = 0;
+	        	  }
+	        	  if(i == 4 && (value[i]==null || value[i]=="")){
+	        		  value[i] = 0;
+	        	  }
+	        	  if(i == 5 && (value[i]==null || value[i]=="")){
+	        		  value[i] = 0;
+	        	  }
 	          };
-	          console.log("提交了")
-	          console.log(value)
-	          $.post("/admin/teacher/save",
+	          $.post("/admin/rule/save",
 	        	{
 	        	  name : value[0],  // 账号
-	        	  trueName : value[1], // 姓名
-	        	  telephone : value[2], // 电话
-	        	  department : value[3], // 所属系部
-	        	  college : value[4], // 所属学院
-	        	  remarks : value[5]  // 备注
+	        	  isSex : value[1], // 姓名
+	        	  isDepartment : value[2], // 电话
+	        	  boyNum : value[3], // 所属系部
+	        	  girlNum : value[4], // 所属学院
+	        	  studentNum : value[5],  // 备注
+	        	  remarks : value[6]  // 备注
 	        	},
 	        	function (res) {
 	        		if(res.success){
+	        			alert("添加规则成功，请刷新页面");
 	        			layer.closeAll();
+	        			
 	        		}else{
-	        			layui.msg(res.errorInfo);
+	        			alert(res.errorInfo);
 	        		}
 	        	}
 	          )
-	          
 	          $(that).click(); 
 	          
 	        }
@@ -268,16 +250,19 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
         	form = layui.form;
         table.render({
             elem: '#students'
-            ,url:'/admin/student/list?' + fieldData
+            ,url:'/admin/student/getSortStudent?' + fieldData
+            ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            ,defaultToolbar: ['filter', 'exports', 'print']
+        	,title: '比赛分组表'
             ,even: true //开启隔行背景
             ,size: 'sm' //小尺寸的表格
             ,cols: [[
                 {field:'id', width:60, title: 'ID', sort: true}
                 ,{field:'trueName', width:100, title: '学生姓名'}
-                ,{field:'sexName', width:60, title: '性别'}
-                ,{field:'department', width:160, title: '系部'}
-                ,{field:'college', width:160, title: '学院'}
-                ,{field:'projectName', width:460, title: '所报的项目'}
+                ,{field:'studentNumber', width:200, title: '学号'}
+                ,{field:'department', width:200, title: '系部'}
+                ,{field:'college', width:200, title: '学院'}
+                ,{field:'queue', width:460, title: '所在队伍'}
             ]]
         });
         //监听搜索
@@ -296,57 +281,22 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
             where: field
           });
         });
-        
-        
-        //监听行工具事件
-        table.on('tool(test)', function(obj){
-            var data = obj.data;
-            var layEvent  = obj.event;
-            switch (layEvent) {
-                case 'del':
-                    layer.confirm('确定要删除该用户？', function(index){
-                        $.post("/admin/student/delete",{id:data.id},function (ret) {
-                            if(ret.success){
-                                layer.msg('删除成功', function () {
-                                    //删除成功
-                                    obj.del();
-                                    layer.close(index);
-                                });
-                            }else{
-                                layer.alert('删除失败, 请联系管理员',function () {
-                                    layer.close(index);
-                                    window.location.reload();
-                                });
-                            }
-                        });
-                    });
-                    break;
-            }
-        });
-        //编辑（test）是layui过滤器
-        table.on('edit(test)', function(obj){
-            var value = obj.value //得到修改后的值
-                ,data = obj.data //得到所在行所有键值
-                ,field = obj.field; //得到字段
-            $.post("/admin/student/save",{id:data.id, field:field, value:value},function (ret) {
-                if (ret.success){
-                    layer.msg('[ID: '+ data.userId +'] ' + field + ' 字段更改为：'+ value);
-                }else{
-                    layer.msg(ret.errorInfo);
-                }
-            });
-        });
     });
-    // 搜索时间区域
-    layui.use('laydate', function(){
-  		var laydate = layui.laydate;
-  		 //日期范围
-  	  	laydate.render({
-  	    	elem: '#test6'
-  	   	 	,range: true
-  	  	});
-    })
-    
+    layui.use(['form', 'layedit', 'laydate'], function() {
+    	var form = layui.form;
+    	form.render();
+    	form.on('select(isSex)', function(data) {
+    		var val = data.value;
+    		console.log(val);
+    		if(val == 2){
+    			$(".first").css("display", "none");
+    			$(".second").css("display", "block");
+    		}else if(val == 1){
+    			$(".second").css("display", "none");
+    			$(".first").css("display", "block");
+    		}
+    	});
+    });
 </script>
 </body>
 </html>

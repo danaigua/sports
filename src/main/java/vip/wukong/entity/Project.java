@@ -33,14 +33,6 @@ public class Project {
 	private int totalPerson;	//项目总人数
 	
 	@ManyToOne
-	@JoinColumn(name="departmentId")
-	private Department department;	//每个系的人数
-	
-	@ManyToOne
-	@JoinColumn(name="collegeId")
-	private College college;		//每个学院的人数，针对的是二级学院，继续教育学院
-	
-	@ManyToOne
 	@JoinColumn(name="teacherId")
 	private Teacher teacher;			//领队
 	
@@ -76,10 +68,10 @@ public class Project {
 
 	@Override
 	public String toString() {
-		return "Project [id=" + id + ", name=" + name + ", totalPerson=" + totalPerson + ", department=" + department
-				+ ", college=" + college + ", teacher=" + teacher + ", coach=" + coach + ", startTime=" + startTime
-				+ ", time=" + time + ", year=" + year + ", state=" + state + ", pid=" + pid + ", remarks=" + remarks
-				+ ", eTime=" + eTime + ", bTime=" + bTime + "]";
+		return "Project [id=" + id + ", name=" + name + ", totalPerson=" + totalPerson + ", teacher=" + teacher
+				+ ", coach=" + coach + ", startTime=" + startTime + ", time=" + time + ", year=" + year + ", state="
+				+ state + ", pid=" + pid + ", addr=" + addr + ", remarks=" + remarks + ", eTime=" + eTime + ", bTime="
+				+ bTime + "]";
 	}
 
 	public Integer getId() {
@@ -104,22 +96,6 @@ public class Project {
 
 	public void setTotalPerson(int totalPerson) {
 		this.totalPerson = totalPerson;
-	}
-
-	public Department getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(Department department) {
-		this.department = department;
-	}
-
-	public College getCollege() {
-		return college;
-	}
-
-	public void setCollege(College college) {
-		this.college = college;
 	}
 
 	public Teacher getTeacher() {

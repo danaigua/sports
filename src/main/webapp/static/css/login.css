@@ -1,0 +1,115 @@
+/* 初始化开始 */
+*{
+	padding:0;
+	margin:0;
+}
+a{
+	text-align:center;
+	color:#000;
+}
+i{
+	font-style: normal;
+	display:inline-block;
+}
+body,html{
+	width:100%;
+	height:100%;	
+}
+/* 初始化结束 */
+
+/* 大盒子 */
+#sign{
+	height:100%;
+	background:#f1f1f1;
+	display: -webkit-flex;
+	display:flex;
+	-webkit-justify-content: center;
+	justify-content: center;
+	align-items: center;
+	-webkit-align-items: center;
+	padding-bottom:174px;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+/* 表单开始 */
+#sign > .sign-box{
+
+}
+#sign > .sign-box h2{
+	padding:20px 0;
+	text-align: center;
+	font-size: 30px;
+	margin-bottom:20px;
+	font-weight: 300;
+}
+#sign > .sign-box form > div{
+	position:relative;
+	margin-bottom:15px;
+}
+#sign > .sign-box div:nth-child(4){
+	display:-webkit-flex;
+	display:flex;
+	justify-content:space-between;
+}
+#sign > .sign-box div:nth-child(4) p{
+	width:170px;
+	text-align:center;
+	font-size:14px;
+	color:#f00;
+}
+#sign > .sign-box div:nth-child(4) a{
+	color:#449d44;
+	width:80px;
+}
+#sign > .sign-box div:nth-child(5) > button{
+	width:100%;
+	height:40px;
+	line-height:40px;
+	text-align:center;
+	background:rgb(0,150,136);
+	color:#fff;
+	border:1px solid #449d44;
+	cursor: pointer;
+}
+#sign > .sign-box div > i{
+	font-size:18px;
+	color:rgb(210,210,210);
+	position:absolute;
+	left:6px;
+	top:12px;
+}
+#sign > .sign-box div > input{
+	padding-left:38px;
+	width:335px;
+	height:38px;
+	font-size:17px;
+	border:1px solid #fff;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+#sign > .sign-box .verifi{
+	display:-webkit-flex;
+	display:flex;
+	
+}
+#sign > .sign-box .verifi > div:nth-child(1){
+	margin-right:10px;
+}
+#sign > .sign-box .verifi input{
+	width:185px;
+}
+#sign > .sign-box .verifi img{
+	height:40px;
+	width:140px;
+}
+/* 表单结束 */
+
+@media (max-width:768px) {
+	#sign > .sign-box div > input{
+		width:300px;
+	}
+	#sign > .sign-box .verifi input{
+		width:150px;
+	}
+}

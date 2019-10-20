@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>学生信息管理</title>
+</head>
+<script src="/static/js/jquery.js"></script>
+<script src="/static/layuiadmin/layui/layui.js" charset="utf-8"></script>
+<link rel="stylesheet" href="/static/layuiadmin/layui/css/layui.css" media="all">
+<style>
+	.form-box{
+		padding: 20px 0;
+    	margin: 0 40px;
+    	border-bottom: 1px solid #ccc;
+    	box-sizing: border-box;
+	}
+	.form-box .layui-form-item{
+	}
+	.form-box .layui-form-label{
+		padding: 9px 10px 9px 0;
+    	width: 77px;
+	}
+	.submit-box{
+		padding-left:87px;
+	}
+</style>
+<body>
+	<div class="form-box">
+		<form class="layui-form" action=""  lay-filter="example">
+		  	<div class="layui-form-item">
+				<div class="layui-inline">
+      				<label class="layui-form-label">项目名称：</label>
+      				<div class="layui-input-inline">
+       			 		<div class="layui-form-item">
+      						<select id="project" name="project" lay-filter="aihao" class="project-name">
+        						<option value=""></option>
+        						
+      						</select>
+  						</div>
+      				</div>
+    			</div>
+    			<div class="layui-inline">
+      				<label class="layui-form-label">系部</label>
+      				<div class="layui-input-inline">
+      					<select name="departmentId" lay-filter="aihao" class="project-name">
+        					<option value=""></option>
+        					
+      					</select>
+      				</div>
+    			</div>
+
+    	   </div>
+    	   <div class="layui-form-item">
+    			<div class="layui-inline">
+      				<label class="layui-form-label">学生姓名：</label>
+      				<div class="layui-input-inline">
+       			 		<input type="text" name="trueName"  autocomplete="off" class="layui-input">
+      				</div>
+    			</div>
+    			<div class="layui-inline">
+      				<label class="layui-form-label">学院</label>
+      				<div class="layui-input-inline">
+       			 		<select name="collegeId" lay-filter="aihao" class="project-name">
+        					<option value=""></option>
+      					</select>
+      				</div>
+    			</div>
+   				 <div class="layui-inline submit-box">
+   				 	<button type="button" lay-submit class="layui-btn aaa" lay-filter="LAY-user-front-search">搜索</button>
+   				 </div>
+    	   </div>
+
+		</form>
+	</div>
+	<table class="layui-hide" id="students" lay-filter="test"></table>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="del">报名比赛</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="cancel">取消比赛</a>
+</script>
+<script>
+    layui.use(['table','form'], function(){
+    	var fieldData = "";
+    	var fieldValue = "";
+        var table = layui.table,
+        	form = layui.form;
+        var layer = layui.layer
+        ,layedit = layui.layedit
+        ,laydate = layui.laydate;
+        table.render({
+            elem: '#students'
+            ,url:'/admin/student/list?' + fieldData
+            ,page: true
+            ,skin: 'line' //行边框风格
+            ,even: true //开启隔行背景
+            ,size: 'sm' //小尺寸的表格
+            ,cols: [[
+                {field:'id', width:60, title: 'ID', sort: true}
+                ,{field:'trueName', width:100, title: '学生姓名'}
+                ,{field:'studentNumber', width:100, title: '学号'}
+                ,{field:'department', width:160, title: '系部'}
+                ,{field:'college', width:160, title: '学院'}
+                ,{field:'projectName', width:1060, title: '所报的项目'}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:180}
+            ]]
+        });
+        //监听搜索
+        form.on('submit(LAY-user-front-search)', function(data){
+          var field = data.field;
+          for(let prop in field){
+        	  if(field[prop] !== "") {
+        		  fieldValue = prop + "=" + field[prop] + "&";
+            	  fieldData += fieldValue;
+            	  fieldValue = "";
+        	  }
+          };
+          
+          //执行重载
+          table.reload('students', {
+            where: field
+          });
+        });
+        
+        //表单取值
+        layui.$('.aaa').on('click', function(){
+          var data = form.val('example');
+        });
+        //监听行工具事件
+        table.on('tool(test)', function(obj){
+            var data = obj.data;
+            var layEvent  = obj.event;
+          
+            switch (layEvent) {
+                case 'del':
+                    layer.confirm('确定要报名该比赛？', function(index){
+                        $.post("/admin/project/apply",{id:data.id,projectId:$("#project").val()},function (ret) {
+                            if(ret.success){
+                                layer.msg('报名成功', function () {
+                                	table.reload('students', {
+                                        where: field
+                                      });
+                                });
+                            }else{
+                                layer.msg(ret.errorInfo,function () {
+                                	layer.close(index);
+                                	table.reload('students', {});
+                                });
+                            }
+                        });
+                    });
+                    break;
+                	case 'cancel':
+                    layer.confirm('确定要取消该比赛？', function(index){
+                        $.post("/admin/project/cancelApply",{id:data.id,projectId:$("#project").val()},function (ret) {
+                            if(ret.success){
+                                layer.msg('取消成功', function () {
+                                	table.reload('students', {
+                                        where: field
+                                      });
+                                });
+                            }else{
+                                layer.msg(ret.errorInfo,function () {
+                                	layer.close(index);
+                                	table.reload('students', {});
+                                });
+                            }
+                        });
+                    });
+                    break;
+            }
+        });
+        //编辑（test）是layui过滤器
+        table.on('edit(test)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            $.post("updateUserInfo",{updateid:data.userId,updatefield:field,updatevalue:value},function (ret) {
+                if (ret.code=="2"){
+                    layer.msg('[ID: '+ data.userId +'] ' + field + ' 字段更改为：'+ value);
+                }else{
+                    layer.msg('保存失败');
+                }
+            });
+        });
+        
+      
+     // 项目名称
+    	$.post("/admin/project/combobox",
+    	{},
+    	function (res) {
+    		console.log(res);
+    		for(let prop in res) {
+    	    		$(".project-name").eq(0).append(`<option value=` + prop + `>` + res[prop] +`</option>`);
+    		};
+            form.render();
+    	});
+    	// 项目年度
+    	$.post("/admin/department/combobox",
+    	    	{},
+    	    	function (res) {
+    	    		for(let prop in res) {
+    	    	    		$(".project-name").eq(1).append(`<option value=` + prop + `>` + res[prop] +`</option>`)
+    	    		};
+    	    		form.render();
+    	    	});
+    	// 学院
+    	$.post("/admin/college/combobox",
+    	    	{},
+    	    	function (res) {
+    	    		for(let prop in res) {
+    	    	    		$(".project-name").eq(2).append(`<option value=` + prop + `>` + res[prop] +`</option>`)
+    	    		};
+    	    		form.render();
+    	    	});
+    });
+    // 搜索时间区域
+    layui.use('laydate', function(){
+  		var laydate = layui.laydate;
+  		 //日期范围
+  	  	laydate.render({
+  	    	elem: '#test6'
+  	   	 	,range: true
+  	  	});
+    })
+    	
+    	
+</script>
+</body>
+</html>

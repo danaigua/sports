@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<script src="/static/js/jquery.js"></script>
+		<script src="/static/layuiadmin/layui/layui.js"></script>
+		<link rel="stylesheet" type="text/css" href="/static/layuiadmin/layui/css/layui.css" />
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			body,
+			html {
+				width: 100%;
+				height: 100%;
+			}
+			.project-box {
+				height: 100%;
+			}
+
+			.project-box>.layui-row {
+				height: 100%;
+			}
+
+
+
+			.row-box:nth-child(1) {}
+
+			.row-box:nth-child(2)>div {
+				height: 50%;
+			}
+
+
+
+			/* 右上角 */
+			.total-text {
+				margin-top: 20px;
+			}
+
+			.total-box {
+				height: 100%;
+				padding: 20px;
+				padding-bottom: 60px;
+				box-sizing: border-box;
+				-webkit-box-sizing: border-box;
+				overflow:auto;
+			}
+
+			.total-box>div h2 {
+				font-size: 20px;
+				font-weight: bold;
+				text-align: center;
+				padding: 30px 0 20px 0;
+				margin: 0 50px;
+			}
+
+			.total-theme {
+				font-weight: bold;
+				margin-right: 20px;
+			}
+
+			.text-left,
+			.text-right {
+				text-align: center;
+			}
+
+			.text-left>div,
+			.text-right>div {
+				margin-bottom: 20px;
+			}
+
+			/* 竖间隙 */
+			.vertical {
+				height: 100%;
+				width: 30px;
+				background: #e6e6e6;
+				position: absolute;
+				right: 0;
+				top: 0;
+			}
+
+			/* 横间隙 */
+			.transverse {
+				width: 100%;
+				height: 30px;
+				background: #e6e6e6;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				z-index:10;
+			}
+
+			/* 左边树形结构开始 */
+			.row-box {
+				height: 100%;
+				display: flex;
+				display: -webkit-flex;
+				position: relative;
+			}
+			.first{
+				display:flex;
+				display:-webkit-flex;
+				justify-content:center;
+				-webkit-justify-content:center;
+			}
+			.total-text{
+				margin-left:30px;
+			}
+			.total-text > div > div{
+				margin-bottom:20px;
+			}
+			/* 左边树形结构结束 */
+			/* 右边信息开始 */
+			/*右上角参赛项目数据*/
+			.info-box {
+				height: 100%;
+			}
+
+			.student-set {
+				height: 60%;
+				position: relative;
+			}
+
+			.projectInfo {
+				display: none;
+			}
+
+
+			/*右下角姓名*/
+			.student-info {
+				height: 40%;
+				padding: 20px;
+				box-sizing: border-box;
+				-webkit-box-sizing: border-box;
+			}
+
+			.info-theme {
+				font-weight: bold;
+				font-size: 17px;
+				margin-bottom: 10px;
+			}
+			.manName, .girlName{
+				margin-bottom:40px;
+				padding-left:10px;
+			}
+			.name-theme{
+				font-weight:bold;
+				margin-right:20px;
+				display:block;
+				margin-bottom:6px;
+			}
+		
+			.teach-info{
+				padding:20px;
+			}
+			.teach-info .layui-input-block{
+				margin-left:117px;
+			}
+			.manName span, .girlName span{
+				margin-right:10px;
+				margin-bottom:10px;
+				display:inline-block;
+			}
+			.name-box{
+				padding-left:10px;
+			}
+			/* 右边信息结束 */
+		</style>
+	</head>
+	<body>
+		<div class="project-box">
+			<!-- 提示框表单 -->
+		<form class="layui-form layui-form-pane teach-info" style="display:none" action="">
+			 <div class="layui-form-item">
+    			<label class="layui-form-label">项目名称</label>
+    			<div class="layui-input-block">
+      				<input type="text" name="name" autocomplete="off" placeholder="请输入标题" class="layui-input tip-input">
+    			</div>
+  			</div>
+    		<div class="layui-form-item layui-form-text">
+    			<label class="layui-form-label">备注</label>
+   				 <div class="layui-input-block">
+      				<textarea placeholder="请输入内容" name="remarks" class="layui-textarea tip-input"></textarea>
+    			</div>
+  			</div>
+  			
+		</form>
+			<div class="layui-row">
+				<!--左边树目录-->
+				<div class="layui-col-xs3 row-box">
+					<div class="demo-tree demo-tree-box" id="test9" style="width: 100%; height: 100%;"></div>
+					<div class="vertical"></div>
+				</div>
+				<!--右边学生信息-->
+				<div class="layui-col-xs9 info-box">
+					<div class="student-set">
+						<div class="total-box">
+							<div class="first">
+								<div id="main" style="width:500px; height:350px;"></div>
+								<div class="total-text layui-row">
+									<div class="">
+										<div>
+											<span class="total-theme">总项目数目</span>
+											<span class="tatal-value">3156</span>
+										</div>
+										<div>
+											<span class="total-theme">参赛学生总人数</span>
+											<span class="tatal-value">3156</span>
+										</div>
+										
+										<div>
+											<span class="total-theme">参与教师人数</span>
+											<span class="tatal-value">3156</span>
+										</div>
+										<div>
+											<span class="total-theme">自定义规则</span>
+											<span class="tatal-value">3156</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="projectInfo">
+							  <form class="layui-form school-form" action="">
+								<div class="layui-inline">
+      								<label class="layui-form-label">校区</label>
+      								<div class="layui-input-inline">
+      									<select name="address" lay-filter="aihao" class="schoolData">
+        									<option value="三水校区">三水校区</option>
+        									<option value="花都校区">花都校区</option>
+      									</select>
+      								</div>
+    							</div>
+    							<div class="layui-inline">
+    								<label class="layui-form-label">年份</label>
+      								<div class="layui-input-inline">
+      									<select name="year" lay-filter="aihao" class="schoolYear">
+        									<option value="">请选择年份</option>
+      									</select>
+      								</div>
+    							</div>
+								<button type="button" lay-submit  class="layui-btn" lay-filter="LAY-user-front-search">搜索</button>
+							  </form>
+								<table class="layui-hide" id="test" lay-filter="test"></table>
+							</div>
+						</div>
+						<div class="transverse"></div>
+					</div>
+
+					<div class="student-info">
+						<div class="total-name">
+							<h4 class="info-theme">总参赛人数</h4>
+							<div class="name-box">
+								<span class="name-theme">男生</span>
+								<p class="manName">
+									
+								</p>
+								<span class="name-theme">女生</span><p class="girlName"></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/html" id="barDemo">
+    		<a class="layui-btn layui-btn-xs" lay-event="del">查看报名学生</a>
+		</script>
+		<script src="../static/layuiadmin/lib/extend/echartsTheme.js"></script>
+		<script src="../static/layuiadmin/lib/extend/echarts.js"></script>
+		
+		<script>
+		
+		// 请求后台数据,比赛项目数据
+		let infoData = []; 
+		$.post("/admin/project/getPorjectInfo", {},
+			function(res) {
+				let i = 0; // 初始化下标
+				for (let prop in res) {
+						$(".tatal-value").eq(i).text(res[prop]);
+						infoData[i] = res[prop];
+						i ++;
+				};
+			});
+		setTimeout(function () {
+			// 左上角数据可视化
+            var myChart = echarts.init(document.getElementById('main'));
+            option = {
+            	    title : {
+            	        text: '体育项目情况',
+            	        subtext: '',
+            	        x:'center'
+            	    },
+            	    tooltip : {
+            	        trigger: 'item',
+            	        formatter: "{a} <br/>{b} : {c} ({d}%)"
+            	    },
+            	    legend: {
+            	        orient : 'vertical',
+            	        x : 'left',
+            	        data:['总项目数目','参赛学生总人数','参与教师人数','自定义规则']
+            	    },
+            	    toolbox: {
+            	        show : true,
+            	        feature : {
+            	            mark : {show: true},
+            	            dataView : {show: true, readOnly: false},
+            	            magicType : {
+            	                show: true, 
+            	                type: ['pie', 'funnel'],
+            	                option: {
+            	                    funnel: {
+            	                        x: '25%',
+            	                        width: '50%',
+            	                        funnelAlign: 'left',
+            	                        max: 1548
+            	                    }
+            	                }
+            	            },
+            	            restore : {show: true},
+            	            saveAsImage : {show: true}
+            	        }
+            	    },
+            	    calculable : true,
+            	    series : [
+            	        {
+            	            name:'访问来源',
+            	            type:'pie',
+            	            radius : '55%',
+            	            center: ['50%', '60%'],
+            	            data:[
+            	                {value:infoData[0], name:'总项目数目'},
+            	                {value:infoData[1], name:'参赛学生总人数'},
+            	                {value:infoData[2], name:'参与教师人数'},
+            	                {value:infoData[3], name:'自定义规则'}
+            	            ]
+            	        }
+            	    ]
+            	};
+            myChart.setOption(option);
+		}, 500);
+            
+            
+            	// 阿贾克斯获取树形数据
+				var treeValue = 1;
+				$.post("/admin/project/getChildren",
+				{},
+				function (res) {
+					treeValue = JSON.parse(res);
+				});
+				
+			
+		
+			let treeData = null; // 树形结构数据
+			let competition = null; // 比赛项目数据
+		
+			
+			
+
+			// 请求后台数据,右下角显示全部人名
+			//$.post("", {},
+			//	function(res) {
+			//		let i = 0; // 初始化下标
+			//		for (let prop in res) {
+			//			for (let target in res[prop]) {
+			//				$("total-name").children("div").append(`<span class='inName'>` + res[prop][target] +`<\/span>`);
+			//			};
+			//		}
+			//	});
+			
+			
+			// 请求后台数据,请求树形结构数据
+			
+		
+			
+		setTimeout(function(){
+			//树形结构表单搭建
+			layui.use(['tree', 'table', 'util', 'form'], function() {
+				var tree = layui.tree,
+					layer = layui.layer,
+					util = layui.util,
+					table = layui.table,
+					form = layui.form;
+				var numId = null; // 当前点击的projectID
+					// 树形结构
+					var data = [{
+						title: '所有比赛',
+						id: 0,
+						spread: true,
+						// checked: true,
+						children: treeValue
+					}];
+				
+				//请求年份
+				// 项目年度
+    			$.post("/admin/year/combobox",
+    	    		{},
+    	    		function (res) {
+    	    			for(let prop in res) {
+    	    	    			$(".schoolYear").append(`<option value=` +  res[prop] + `>` + res[prop] +`</option>`)
+    	    			};
+    	    			form.render();
+    	    		});
+				// 表单
+				tree.render({
+					elem: '#test9',
+					operate: function(obj){
+					    var type = obj.type; //得到操作类型：add、edit、del
+					    var data = obj.data; //得到当前节点的数据
+					    var id = data.id; //得到节点索引
+					    if(type === 'add'){ //增加节点
+						    	//添加老师
+						    	layui.use('layer', function(){ //独立版的layer无需执行这一句
+						    	  var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+						    	  //触发事件
+						    	  var active = {
+						    	    setTop: function(){
+						    	      var that = this; 
+						    	      //多窗口模式，层叠置顶
+						    	      layer.open({
+						    	        type: 1 //此处以iframe举例
+						    	        ,title: '添加老师信息'
+						    	        ,area: ['700px', '520px']
+						    	        ,shade: 0
+						    	        ,maxmin: true
+						    	        ,offset: [ //为了演示，随机坐标
+						    	           30
+						    	          ,300
+						    	        ] 
+						    	        ,content: $(".teach-info")
+						    	        ,btn: ['提交', '关闭'] //只是为了演示
+						    	        ,yes: function(){
+						    	          let value = [];
+						    	          
+						    	          for(let i = 0; i < $(".tip-input").length; i ++){
+						    	        	  value[i] = $(".tip-input").eq(i).val();
+						    	          };
+						    	          $.post("/admin/project/save",
+						    	        	{
+						    	        	  parentId : id,
+						    	        	  projectName : value[0],  // 账号
+						    	        	  remarks : value[1]  // 备注
+						    	        	},
+						    	        	function (res) {
+						    	        		if(res.success){
+						    	        			layer.closeAll();
+						    	        			$(".teach-info").submit();
+						    	        		}else{
+						    	        			layui.msg(res.errorInfo);
+						    	        		}
+						    	        	}
+						    	          )
+						    	          $(that).click(); 
+						    	        }
+						    	        ,btn2: function(){
+						    	          layer.closeAll();
+						    	        }
+						    	        ,zIndex: layer.zIndex //重点1
+						    	        ,success: function(layero){
+						    	          layer.setTop(layero); //重点2
+						    	        }
+						    	      });
+						    	    }
+						    	  };
+						    	  var othis = $(this);
+						    	  active['setTop'] ? active['setTop'].call(this, othis) : '';
+						    	});
+						    }else if(type === 'del'){ //删除节点
+						      	$.post("/admin/project/delete",
+						      			{id : id},
+						      		function (res) {
+						      			if(res.success){
+				    	        			$(".teach-info").submit();
+				    	        		}else{
+				    	        			alert(res.errorInfo);
+				    	        			$(".teach-info").submit();
+				    	        		}
+						      		});
+						    	};
+						  	},
+					data: data,
+					edit: ['add', 'del'] //操作节点的图标
+						,
+					click: function(obj) {
+						numId =  obj.data.id;
+						var schoolData = "";
+						var  schoolYear = "";
+						// 表单结构
+				table.render({
+					elem: '#test',
+					url: '/admin/student/count?projectId=' + obj.data.id + '&address=' + schoolData + '&year=' + schoolYear,
+					cols: [
+						[{
+							field: 'college',
+							width: 160,
+							title: '学院名称',
+							sort: true
+						}, {
+							field: 'department',
+							width: 160,
+							title: '系部名称'
+						}, {
+							field: 'sex1',
+							width: 160,
+							title: '男生参赛人数',
+							sort: true
+						}, {
+							field: 'sex2',
+							width: 160,
+							title: '女生参赛人数'
+						},{
+							fixed: 'right', 
+							title:'操作', 
+							toolbar: '#barDemo', 
+							width:160}]
+					],
+				});
+				
+				//监听行工具事件
+		        table.on('tool(test)', function(obj){
+		        	var field = obj.field;
+		            var data = obj.data;
+		            var layEvent  = obj.event;
+		            switch (layEvent) {
+		                case 'del':
+		                        $.post("/admin/student/getCountInfo",{id:data.id,projectId:numId,department:data.department,
+		                        	college:data.college},function (ret) {
+		                        		$(".manName").empty();
+		                        		$(".girlName").empty();
+		                        		let manName = ret.sex1;
+		                        		let manNameArr = ret.sex1.split(",");
+		                        		let girlNameArr = ret.sex2.split(",");
+		                        		
+		                        		for(let i = 0; i < manNameArr.length; i ++) {
+		                        			$(".manName").append(`<span>` + manNameArr[i] + `</span>`)
+		                        		};
+		                        		for(let i = 0; i < girlNameArr.length; i ++) {
+		                        			$(".girlName").append(`<span>` + girlNameArr[i] + `</span>`)
+		                        		};
+		                    	});
+		                    break;
+		            }
+		        });
+		      //搜索校区监听搜索
+		        form.on('submit(LAY-user-front-search)', function(data){
+					 schoolData = $(".schoolData").val();
+					 schoolYear = $(".schoolYear").val();
+		        	console.log(schoolData,schoolYear)
+		         	 var field = data.field;
+		          //执行重载
+		          table.reload('test', {
+		            where: field
+		          });
+		        });
+				$(".first").css({
+					"display": "none"
+				}); // 项目总信息框隐藏
+				$(".projectInfo").css({
+					"display": "block"
+				}); // 项目表格显示
+				layer.msg(JSON.stringify(obj.data));
+					}
+				});
+			})
+		}, 200)
+		</script>
+	</body>
+</html>

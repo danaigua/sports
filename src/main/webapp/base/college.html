@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>学生信息管理</title>
+</head>
+<script src="/static/js/jquery.js"></script>
+<script src="/static/layuiadmin/layui/layui.js" charset="utf-8"></script>
+<link rel="stylesheet" href="/static/layuiadmin/layui/css/layui.css" media="all">
+<style>
+	.form-box{
+		padding: 20px 0;
+    	margin: 0 40px;
+    	border-bottom: 1px solid #ccc;
+    	box-sizing: border-box;
+	}
+	.form-box .layui-form-item{
+	}
+	.form-box .layui-form-label{
+		padding: 9px 10px 9px 0;
+    	width: 77px;
+	}
+	.submit-box{
+		padding-left:87px;
+	}
+	.tableBox{
+		width:1080px;
+		margin: auto 70px;
+		margin-top:86px;
+	}
+	.addCollege{
+		position:absolute;
+		left:70px;
+		top:27px;
+	}
+	.teach-info{
+		padding:20px;
+	}
+</style>
+<body>
+<div class="layui-inline site-demo-button addCollege" id="layerDemo">
+	<button  type="button" data-method="setTop" class="layui-btn">添加学院</button>
+</div>
+<div class="tableBox">
+	<table class="layui-hide" id="students" lay-filter="test"></table>
+</div>
+<!-- 提示框表单 -->
+		<form class="layui-form layui-form-pane teach-info" style="display:none">
+			 <div class="layui-form-item">
+    			<label class="layui-form-label">学院名称</label>
+    			<div class="layui-input-block">
+      				<input type="text" name="name" autocomplete="off" placeholder="请输入标题" class="layui-input tip-input">
+    			</div>
+  			</div>
+    		<div class="layui-form-item layui-form-text">
+    			<label class="layui-form-label">备注</label>
+   				 <div class="layui-input-block">
+      				<textarea placeholder="请输入内容" name="remarks" class="layui-textarea tip-input"></textarea>
+    			</div>
+  			</div>
+  			
+		</form>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+//添加学院
+layui.use('layer', function(){ //独立版的layer无需执行这一句
+  var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+  
+  //触发事件
+  var active = {
+    setTop: function(){
+      var that = this; 
+      //多窗口模式，层叠置顶
+      layer.open({
+        type: 1 //此处以iframe举例
+        ,title: '添加老师信息'
+        ,area: ['600px', '350px']
+        ,shade: 0
+        ,maxmin: true
+        ,offset: [ //为了演示，随机坐标
+           30
+          ,300
+        ] 
+        ,content: $(".teach-info")
+        ,btn: ['提交', '关闭'] //只是为了演示
+        ,yes: function(){
+        	 let value = [];
+             for(let i = 0; i < $(".tip-input").length; i ++){
+           	  value[i] = $(".tip-input").eq(i).val();
+             };
+            
+             $.post("/admin/college/save",
+           	{
+           	  name : value[0], // 姓名
+           	  remarks : value[1]  // 备注
+           	},
+           	function (res) {
+           		if(res.success){
+           			layer.closeAll();
+           		}else{
+           			layui.msg(res.errorInfo);
+           		}
+           	}
+             )
+          $(that).click(); 
+        }
+        ,btn2: function(){
+          layer.closeAll();
+        }
+        
+        ,zIndex: layer.zIndex //重点1
+        ,success: function(layero){
+          layer.setTop(layero); //重点2
+        }
+      });
+    }
+  };
+  $('#layerDemo .layui-btn').on('click', function(){
+	    var othis = $(this), method = othis.data('method');
+	    active[method] ? active[method].call(this, othis) : '';
+	  });
+});
+
+
+    layui.use('table', function(){
+    	var fieldData = "";
+    	var fieldValue = "";
+        var table = layui.table,
+        	form = layui.form;
+        table.render({
+            elem: '#students'
+            ,url:'/admin/college/list'
+            ,skin: 'line' //行边框风格
+            ,even: true //开启隔行背景
+            ,size: 'sm' //小尺寸的表格
+            ,cols: [[
+                {field:'id', width:160, title: 'ID', sort: true}
+                ,{field:'name', width:260, title: '学院名称', edit: 'text'}
+                ,{field:'remarks', width:460, title: '备注',  edit: 'text'}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:100}
+            ]]
+        });
+        //监听搜索
+        form.on('submit(LAY-user-front-search)', function(data){
+          var field = data.field;
+          for(let prop in field){
+        	  if(field[prop] !== "") {
+        		  fieldValue = prop + "=" + field[prop] + "&";
+            	  fieldData += fieldValue;
+            	  fieldValue = "";
+        	  }
+          };
+          
+          console.log(fieldData);
+          //执行重载
+          table.reload('students', {
+            where: field
+          });
+        });
+        
+        
+        //监听行工具事件
+        table.on('tool(test)', function(obj){
+            var data = obj.data;
+            var layEvent  = obj.event;
+            switch (layEvent) {
+                case 'del':
+                    layer.confirm('确定要删除该学院？', function(index){
+                        $.post("/admin/college/delete",{id:data.id},function (ret) {
+                            if(ret.success){
+                                layer.msg('删除成功', function () {
+                                    //删除成功
+                                    obj.del();
+                                    layer.close(index);
+                                });
+                            }else{
+                                layer.alert(ret.errorInfo,function () {
+                                    layer.close(index);
+                                    window.location.reload();
+                                });
+                            }
+                        });
+                    });
+                    break;
+            }
+        });
+        //编辑（test）是layui过滤器
+        table.on('edit(test)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            $.post("/admin/college/save",{id:data.id,field:field, value:value},function (ret) {
+                if (ret.success){
+                    layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
+                }else{
+                    layer.msg('保存失败,请联系管理员');
+                }
+            });
+        });
+    });
+    
+    // 搜索时间区域
+    layui.use('laydate', function(){
+  		var laydate = layui.laydate;
+  		 //日期范围
+  	  	laydate.render({
+  	    	elem: '#test6'
+  	   	 	,range: true
+  	  	});
+    })
+</script>
+</body>
+</html>

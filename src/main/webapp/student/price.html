@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>学生信息管理</title>
+</head>
+<script src="/static/js/jquery.js"></script>
+<script src="/static/layuiadmin/layui/layui.js" charset="utf-8"></script>
+<link rel="stylesheet" href="/static/layuiadmin/layui/css/layui.css" media="all">
+<style>
+	.form-box{
+		padding: 20px 0;
+    	margin: 0 40px;
+    	border-bottom: 1px solid #ccc;
+    	box-sizing: border-box;
+	}
+	.form-box .layui-form-item{
+	}
+	.form-box .layui-form-label{
+		padding: 9px 10px 9px 0;
+    	width: 77px;
+	}
+	.submit-box{
+		padding-left:87px;
+	}
+</style>
+<body>
+	<div class="form-box">
+		<form class="layui-form" action="">
+		  	<div class="layui-form-item">
+				<div class="layui-inline">
+      				<label class="layui-form-label">姓名</label>
+      				<div class="layui-input-inline">
+       			 		<input type="text" name="trueName"  autocomplete="off" class="layui-input">
+      				</div>
+    			</div>
+    			<div class="layui-inline">
+      				<label class="layui-form-label">学号</label>
+      				<div class="layui-input-inline">
+       			 		<input type="text" name="studentNumber"  autocomplete="off" class="layui-input">
+      				</div>
+    			</div>
+    			<div class="layui-inline">
+      				<label class="layui-form-label">系部</label>
+      				<div class="layui-input-inline">
+       			 		<input type="text" name="department.name"  autocomplete="off" class="layui-input">
+      				</div>
+    			</div>
+    			<div class="layui-inline">
+      				<label class="layui-form-label">年级</label>
+      				<div class="layui-input-inline">
+       			 		<input type="text" name="grade"  autocomplete="off" class="layui-input">
+      				</div>
+    			</div>
+    	   </div>
+    	   <div class="layui-form-item">
+				<div class="layui-inline">
+      				<label class="layui-form-label">学院</label>
+      				<div class="layui-input-inline">
+       			 		<input type="text" name="college.name"  autocomplete="off" class="layui-input">
+      				</div>
+    			</div>
+    			<div class="layui-inline">
+      				<label class="layui-form-label">项目名称</label>
+      				<div class="layui-input-inline">
+       			 		<input type="text" name="projectName"  autocomplete="off" class="layui-input">
+      				</div>
+    			</div>
+    		
+    			<div class="layui-inline">
+      				<label class="layui-form-label">日期范围</label>
+      				<div class="layui-input-inline">
+        				<input type="text" name="beginAndEndTime" class="layui-input" id="test6" placeholder=" - ">
+      				</div>
+    			</div>
+   				 <div class="layui-inline submit-box">
+   				 	<button type="button" lay-submit class="layui-btn" lay-filter="LAY-user-front-search">搜索</button>
+   				 </div>
+    	   </div>
+
+		</form>
+	</div>
+	<table class="layui-hide" id="students" lay-filter="test"></table>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+    layui.use('table', function(){
+    	var fieldData = "";
+    	var fieldValue = "";
+        var table = layui.table,
+        	form = layui.form;
+        table.render({
+            elem: '#students'
+            ,url:'/admin/student/list?' + fieldData
+            ,page: true
+            ,skin: 'line' //行边框风格
+            ,even: true //开启隔行背景
+            ,size: 'sm' //小尺寸的表格
+            ,cols: [[
+                {field:'id', width:160, title: 'ID', sort: true}
+                ,{field:'trueName', width:160, title: '学生姓名', edit: 'text'}
+                ,{field:'studentNumber', width:160, title: '学号',  edit: 'text'}
+                ,{field:'telephone', width:160, title: '手机号码', edit: 'text'}
+                ,{field:'grade', width:160, title: '年级',  edit: 'text'}
+                ,{field:'clazz', width:160, title: '班级',  edit: 'text'}
+                ,{field:'sex', width:160, title: '性别',  edit: 'text'}
+                ,{field:'department', width:160, title: '系部',  edit: 'text'}
+                ,{field:'college', width:160, title: '学院',  edit: 'text'}
+                ,{field:'projectName', width:160, title: '所报的项目',  edit: 'text'}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:100}
+            ]]
+        });
+        //监听搜索
+        form.on('submit(LAY-user-front-search)', function(data){
+          var field = data.field;
+          for(let prop in field){
+        	  if(field[prop] !== "") {
+        		  fieldValue = prop + "=" + field[prop] + "&";
+            	  fieldData += fieldValue;
+            	  fieldValue = "";
+        	  }
+          };
+          
+          console.log(fieldData);
+          //执行重载
+          table.reload('students', {
+            where: field
+          });
+        });
+        
+        
+        //监听行工具事件
+        table.on('tool(test)', function(obj){
+            var data = obj.data;
+            var layEvent  = obj.event;
+            switch (layEvent) {
+                case 'del':
+                    layer.confirm('确定要删除该用户？', function(index){
+                        $.post("/admin/student/delete",{id:data.id},function (ret) {
+                            if(ret.success){
+                                layer.msg('删除成功', function () {
+                                    //删除成功
+                                    obj.del();
+                                    layer.close(index);
+                                });
+                            }else{
+                                layer.alert('删除失败, 请联系管理员',function () {
+                                    layer.close(index);
+                                    window.location.reload();
+                                });
+                            }
+                        });
+                    });
+                    break;
+            }
+        });
+        //编辑（test）是layui过滤器
+        table.on('edit(test)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            $.post("updateUserInfo",{updateid:data.userId,updatefield:field,updatevalue:value},function (ret) {
+                if (ret.code=="2"){
+                    layer.msg('[ID: '+ data.userId +'] ' + field + ' 字段更改为：'+ value);
+                }else{
+                    layer.msg('保存失败');
+                }
+            });
+        });
+    });
+    
+    // 搜索时间区域
+    layui.use('laydate', function(){
+  		var laydate = layui.laydate;
+  		 //日期范围
+  	  	laydate.render({
+  	    	elem: '#test6'
+  	   	 	,range: true
+  	  	});
+    })
+</script>
+</body>
+</html>

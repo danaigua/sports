@@ -1,0 +1,190 @@
+/**
+ * 全局背景颜色
+ */
+body{
+	background:#edeaea;
+}
+
+/* 公共样式开始 */
+.box-spaing          /**集体项目， 达标四项，广播体操，拔河*/
+{
+	display:-webkit-flex;
+	display:flex;
+	justify-content:space-between;
+	-webkit-justify-content:space-between;
+	margin-bottom:30px;
+}
+/* 公共样式结束 */
+
+/**
+ * 大盒子背景颜色 
+ */
+#sign{
+	background:#fff;
+	padding:0;
+	padding-top:30px;
+	position:relative;
+	height:100%;
+}
+#sign > h2{
+	margin:40px 0;
+	margin-bottom:29px;
+}
+/**
+ * 填写个人信息开始 
+ */
+.coach-tip{
+	display:inline-block;
+	margin-top:8px;
+	color:#ccc;
+}
+.input-first{
+	display:flex;
+	display:-webkit-flex;
+}
+.information{
+	background:#fff;
+	padding-bottom:9px;
+	margin-bottom:18px;
+	padding-left:30px;
+}
+.information > .infor-box div.form-group {
+	margin-right:20px;
+}
+
+.information > .infor-box div.form-group span{
+	color:#ccc;
+	font-size:14px;
+}
+.information > .infor-box .form-title{
+	font-weight:bold;
+}
+.addInfo {
+	width:25px;
+	height:25px;
+	line-height:25px;
+	text-align:center;
+	border:1px solid #000;
+	font-size:24px;
+	border-radius:50%;
+	margin-left:5px;
+	cursor:pointer;
+	
+}
+.information > .infor-box .form-infor li:nth-child(1) > i{
+	width:30px;
+	margin-top:6px;
+	border-radius:10px;
+	color:#fff;
+	background:#f07029;
+	margin-right:20px;	
+	font-size:16px;
+}
+.information > .infor-box .form-infor li:nth-child(5) > i{
+	/* font-size:24px;
+	border-radius:50%;
+	margin-left:20px;
+	cursor:pointer; */
+}
+.information > .infor-box .form-infor li:nth-child(4) > input{
+	width:100px;
+}
+.information > .infor-box > form > div:nth-child(1){
+	margin-bottom:20px;
+}
+.information > .infor-box > form > div{
+	margin-bottom:12px;
+}
+.information .box-spaing{
+	justify-content: center;
+	margin-top:30px;
+}
+.information .box-spaing button:nth-child(1){
+	margin-right:50px;
+}
+.box-spaing button{
+	width:82px;
+	height:30px;
+	line-height:30px;
+	text-align:center;
+	color:#fff;
+	background:#f07029;
+	border-radius:5px;
+	border:1px solid #000;
+}
+.form-inline >.box-spaing button:nth-child(2) {
+	background:#fbfbfb;
+	color:#c9c9c9;
+}
+/**
+ * 填写个人信息结束
+ */
+/* 提示框开始 */
+#sign > .tip{
+	width:400px;
+	position:absolute;
+	left:50%;
+	margin-left:-200px;
+	top:16%;
+	background:#f1f1f1;
+	z-index: 3;
+	border-radius:5px;
+	/* border:1px solid #000; */
+	overflow: hidden;
+	display:none;
+}
+.tipText{
+	text-align:center;
+	padding:10px 30px;
+	font-size:17px;
+}
+.closeIcon{
+	cursor: pointer;
+}
+#sign > .tip > h4{
+	margin-top:0;
+	color:#fff;
+	padding:10px 20px;
+	background:#f07029;
+	display:-webkit-flex;
+	display:flex;
+	justify-content:space-between;
+	-webkit-justify-content:space-between;
+}
+#sign .tip > .box-spaing{
+	justify-content: center;
+	-webkit-justify-content: center;
+	margin:5px 30px 0 30px;
+	padding:16px;
+	border-top:1px solid #ccc;
+}
+.tip > .box-spaing button:nth-child(1){
+	margin-right:50px;
+	background:#ccc;
+	color:#333;
+	
+}
+.tip > .box-spaing button:nth-child(1){
+	margin-right:50px;
+	background:#ccc;
+	color:#333;
+	
+}
+.progress{
+	display:none;
+	margin:15px 0;
+}
+/* 提示框结束 */
+
+/* 背景遮盖开始 */
+.background{
+	position:absolute;
+	left: 0;
+	top:0;
+	width:100%;
+	height:100%;
+	background:rgba(255,255,255,.7);
+	z-index: 2;
+	display:none;
+}
+/* 背景遮盖结束 */

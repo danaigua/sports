@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>学生信息管理</title>
+</head>
+<script src="/static/js/jquery.js"></script>
+<script src="/static/layuiadmin/layui/layui.js" charset="utf-8"></script>
+<link rel="stylesheet" href="/static/layuiadmin/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="/static/layuiadmin/layui/css/layui.css" media="all">
+<style>
+	.form-box{
+		padding: 20px 0;
+    	margin: 0 40px;
+    	border-bottom: 1px solid #ccc;
+    	box-sizing: border-box;
+	}
+	.form-box .layui-form-item{
+	}
+	.form-box .layui-form-label{
+		padding: 9px 10px 9px 0;
+    	width: 77px;
+	}
+	.submit-box{
+		padding-left:87px;
+	}
+	.logBox{
+		width: 1100px;
+		margin: auto 70px;
+	}
+</style>
+<body>
+	<div class="form-box">
+		<form class="layui-form" action="">
+		  	<div class="layui-form-item">
+				<div class="layui-inline">
+      				<label class="layui-form-label">操作内容</label>
+      				<div class="layui-input-inline">
+       			 		<input type="text" name="content"  autocomplete="off" class="layui-input">
+      				</div>
+    			</div>
+    			<div class="layui-inline">
+      				<label class="layui-form-label">操作用户</label>
+      				<div class="layui-input-inline">
+       			 		<input type="text" name="user"  autocomplete="off" class="layui-input">
+      				</div>
+    			</div>
+    			<div class="layui-inline">
+      				<label class="layui-form-label">日期范围</label>
+      				<div class="layui-input-inline">
+        				<input type="text" name="beginAndEndTime" class="layui-input" id="test6" placeholder=" - ">
+      				</div>
+    			</div>
+   				 <div class="layui-inline submit-box">
+   				 	<button type="button" lay-submit class="layui-btn" lay-filter="LAY-user-front-search">搜索</button>
+   				 </div>
+    	   </div>
+		</form>
+	</div>
+	<div class="logBox">
+		<table class="layui-hide" id="students" lay-filter="test"></table>
+	</div>
+	
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+    layui.use('table', function(){
+    	var fieldData = "";
+    	var fieldValue = "";
+        var table = layui.table,
+        	form = layui.form;
+        table.render({
+            elem: '#students'
+            ,url:'/admin/log/list?' + fieldData
+            ,page: true
+            ,skin: 'line' //行边框风格
+            ,even: true //开启隔行背景
+            ,size: 'sm' //小尺寸的表格
+            ,cols: [[
+                {field:'id', width:160, title: 'ID', sort: true}
+                ,{field:'type', width:160, title: '类型'}
+                ,{field:'user', width:160, title: '操作用户'}
+                ,{field:'time', width:160, title: '操作时间'}
+                ,{field:'content', width:460, title: '操作内容'}
+            ]]
+        });
+        //监听搜索
+        form.on('submit(LAY-user-front-search)', function(data){
+          var field = data.field;
+          for(let prop in field){
+        	  if(field[prop] !== "") {
+        		  fieldValue = prop + "=" + field[prop] + "&";
+            	  fieldData += fieldValue;
+            	  fieldValue = "";
+        	  }
+          };
+          console.log(fieldData);
+          //执行重载
+          table.reload('students', {
+            where: field
+          });
+        });
+    });
+    
+    // 搜索时间区域
+    layui.use('laydate', function(){
+  		var laydate = layui.laydate;
+  		 //日期范围
+  	  	laydate.render({
+  	    	elem: '#test6'
+  	   	 	,range: true
+  	  	});
+    })
+</script>
+</body>
+</html>

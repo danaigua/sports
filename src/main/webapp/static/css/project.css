@@ -1,0 +1,372 @@
+/**
+ * 鍏ㄥ眬鑳屾櫙棰滆壊
+ */
+body{
+	background:#fff;
+}
+/* 鍏叡鏍峰紡寮�濮� */
+.box-spaing          /**闆嗕綋椤圭洰锛� 杈炬爣鍥涢」锛屽箍鎾綋鎿嶏紝鎷旀渤*/
+{
+	display:-webkit-flex;
+	display:flex;
+	justify-content:space-between;
+	-webkit-justify-content:space-between;
+	margin-bottom:30px;
+}
+/* 鍏叡鏍峰紡缁撴潫 */
+#sign{
+	height:100%;
+	background:#fff;
+}
+/*鎻愮ず妗嗗紑濮�*/
+#sign > .tip{
+	width:600px;
+	position:absolute;
+	left:50%;
+	margin-left:-300px;
+	top:16%;
+	background:#f1f1f1;
+	z-index: 3;
+	border-radius:5px;
+	/* border:1px solid #000; */
+	overflow: hidden;
+	display:none;
+}
+#sign > .tip > h4{
+	margin-top:0;
+	color:#fff;
+	padding:10px 20px;
+	background:#f07029;
+	display:-webkit-flex;
+	display:flex;
+	justify-content:space-between;
+	-webkit-justify-content:space-between;
+}
+#sign > .tip > p {
+	font-size:17px;
+	font-weight:bold;
+	padding-left:20px;
+	margin-bottom:5px;
+}
+#sign > .tip > p > span{
+	font-size:80%;
+	color:#666;
+	font-weight:400;
+}
+#sign > .tip > .tip-box > div > span{
+	display:block;
+	padding-left:36px;
+	font-weight:bold;
+	margin-bottom:6px;
+}
+#sign > .tip > .tip-box > div:nth-child(2n) > span{
+	padding:0px;
+}
+#sign > .tip > .tip-box .manName,
+#sign > .tip > .tip-box .manName{
+/* 	display:-webkit-flex;
+	display:flex; */
+	padding-left:36px;
+}
+#sign .nameBox{
+	display:inline-block;
+	padding:5px;
+	border:1px solid #000;
+	border-radius:5px;
+	margin-right:10px;
+	margin-bottom:10px;
+	cursor:pointer;
+}
+#sign .nameBox:hover{
+	background:#f07029;
+	color:#fff;
+}
+#sign .nameBox:hover > i {
+	border:1px solid #fff;
+}
+#sign .nameBox > i {
+	width:17px;
+	height:17px;
+	line-height:17px;
+	font-size:16px;
+}
+#sign .tip > .box-spaing{
+	justify-content: center;
+	-webkit-justify-content: center;
+	margin:5px 30px 0 30px;
+	padding:16px;
+	border-top:1px solid #ccc;
+}
+.tip > .box-spaing button:nth-child(1){
+	margin-right:50px;
+	background:#ccc;
+	color:#333;
+	
+}
+.closeIcon{
+	cursor: pointer;
+}
+/*鎻愮ず妗嗙粨鏉�*/
+
+/* 绔炶禌椤圭洰棰樼洰寮�濮� */
+header{
+	margin-top:40px;
+	margin-bottom:30px;
+}
+header div{
+	width:300px;
+	margin:0 auto;
+}
+header > div > h3{
+	position:relative;
+}
+header > div > h3 > span{
+	position:absolute;
+	left:63%;
+	top:45%;
+	z-index: 1;
+	background:#fff;
+	font-size:20px;
+	letter-spacing:1px;
+}
+header > div > h3 > span::after{
+	content:"";
+	display:block;
+	height:26px;
+	width:1px;
+	position:absolute;
+	left:0;
+	top:-5px;
+	background: #000;
+	transform: skewX(-32deg);
+}
+/* 绔炶禌椤圭洰棰樼洰缁撴潫 */
+
+/* 骞挎挱鎿嶏紝鎷旀渤姣旇禌寮�濮� */
+section#other-match{
+	padding:0 100px;
+}
+
+section#other-match > div > span,
+#athletics .collective > p,
+#athletics .four > p{
+	font-size:18px;
+	width:110px;
+}
+#athletics .collective > p,
+#athletics .four > p{
+	width:470px;
+}
+section#other-match > div > button,
+#athletics .collective > button,
+#athletics .four > button,
+.information .box-spaing button,
+.box-spaing button{
+	width:100px;
+	height:35px;
+	line-height:35px;
+	text-align:center;
+	color:#fff;
+	background:#f07029;
+	border-radius:5px;
+	border:1px solid #000;
+}
+/* 骞挎挱鎿嶏紝鎷旀渤姣旇禌缁撴潫 */
+
+/* 鐢板緞姣旇禌寮�濮� */
+section#athletics{
+	padding:0 100px;
+}
+section#athletics > p{
+	font-size:18px;
+}
+section#athletics > .single > ul li > .singLink{
+	font-size:17px;
+	display:block;
+}
+section#athletics > .single > ul li > .singLink:hover,
+section#athletics > .single > ul li > .singLink:hover + i{
+	
+	color:#f07029;
+}
+section#athletics > .single{
+	margin:34px 0;
+	border-bottom:1px solid #f1f1f1;
+}
+section#athletics > div p {
+	font-weight:bold;
+}
+section#athletics > div  .personal  ul:nth-child(1){
+	 margin-bottom:17px;
+}
+.activeBnt{
+	background:#f07029;
+	color:#fff;
+}
+section#athletics > div .personal > ul li a:hover,
+section#athletics > div .field > ul li a:hover{
+	background:#f07029;
+	color:#fff;
+	text-decoration:none;
+}
+section#athletics > div .personal > ul li a,
+section#athletics > div .field > ul li a{
+	width:100px;
+	height:30px;
+	line-height:30px;
+	border:1px solid #000;
+	border-radius:5px;
+	text-align:center;
+}
+ #athletics .project{
+	display:none;
+	margin-bottom:30px;
+}
+
+ #athletics .project:nth-child(1) {
+	display:block;
+}
+.collective > p,
+.four > p {
+	margin-bottom:17px;
+}
+.single li:nth-child(1) a{
+	color:#f07029;
+}
+.single li:nth-child(1) a + i{
+	color:#f07029;
+}
+/* 鐢板緞姣旇禌缁撴潫 */
+
+/* 鎶ュ悕鎻愪氦寮�濮� */
+.submitInput{
+	-webkit-justify-content: center;
+	justify-content: cneter;
+	padding:17px 0;
+	border-top:1px solid #ccc;
+	margin:0 40px;
+}
+.submitInput > button:nth-child(1) {
+	background:#fff;
+	color:#666;
+	border:1px solid #666;
+	margin-right:50px;
+	
+}
+
+/* 鎶ュ悕鎻愪氦缁撴潫 */
+
+/* 鑳屾櫙閬洊寮�濮� */
+.background{
+	position:absolute;
+	left: 0;
+	top:0;
+	width:100%;
+	height:100%;
+	background:rgba(255,255,255,.7);
+	z-index: 2;
+	display:none;
+}
+/* 鑳屾櫙閬洊缁撴潫 */
+
+
+/*鎻愮ず妗嗗紑濮�*/
+#sign > .tip{
+	width:600px;
+	position:absolute;
+	left:50%;
+	margin-left:-300px;
+	top:16%;
+	background:#f1f1f1;
+	z-index: 3;
+	border-radius:5px;
+	/* border:1px solid #000; */
+	overflow: hidden;
+	display:none;
+}
+#sign > .tip > h4{
+	margin-top:0;
+	color:#fff;
+	padding:10px 20px;
+	background:#f07029;
+	display:-webkit-flex;
+	display:flex;
+	justify-content:space-between;
+	-webkit-justify-content:space-between;
+}
+#sign > .tip > p {
+	font-size:17px;
+	font-weight:bold;
+	padding-left:20px;
+	margin-bottom:5px;
+}
+#sign > .tip > p > span{
+	font-size:80%;
+	color:#666;
+	font-weight:400;
+}
+#sign > .tip > .tip-box > div > span{
+	display:block;
+	padding-left:36px;
+	font-weight:bold;
+	margin-bottom:6px;
+}
+#sign > .tip > .tip-box > div:nth-child(2n) > span{
+	padding:0px;
+}
+#sign > .tip > .tip-box .manName,
+#sign > .tip > .tip-box .manName{
+/* 	display:-webkit-flex;
+	display:flex; */
+	padding-left:36px;
+}
+#sign .nameBox{
+	display:inline-block;
+	padding:5px;
+	border:1px solid #000;
+	border-radius:5px;
+	margin-right:10px;
+	margin-bottom:10px;
+	cursor:pointer;
+}
+#sign .nameBox:hover{
+	background:#f07029;
+	color:#fff;
+}
+#sign .nameBox:hover > i {
+	border:1px solid #fff;
+}
+#sign .nameBox > i {
+	width:17px;
+	height:17px;
+	line-height:17px;
+	font-size:16px;
+}
+#sign .tip > .box-spaing{
+	justify-content: center;
+	-webkit-justify-content: center;
+	margin:5px 30px 0 30px;
+	padding:16px;
+	border-top:1px solid #ccc;
+}
+.tip > .box-spaing button:nth-child(1){
+	margin-right:50px;
+	background:#ccc;
+	color:#333;
+	
+}
+.closeIcon{
+	cursor: pointer;
+}
+.addInfo {
+	width:25px;
+	height:25px;
+	line-height:25px;
+	text-align:center;
+	border:1px solid #000;
+	font-size:24px;
+	border-radius:50%;
+	margin-left:5px;
+	cursor:pointer;
+}
+/*鎻愮ず妗嗙粨鏉�*/

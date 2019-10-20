@@ -1,0 +1,84 @@
+/* 大盒子样式开始 */
+#sports{
+	height:100%;
+	background-image: url('../img/background.jpg');
+	background-size:auto 100%;
+}
+/* 大盒子样式结束 */
+
+/* 媒体查询开始 */
+@media (max-width:1200px){
+	.content-box{   /*通知内容宽*/
+		width:450px;
+	}
+	
+}
+@media (max-width:992px){
+	.content-box{   /*通知内容宽*/
+		width:450px;
+		margin:0 auto;
+	}
+	
+}
+@media (max-width:768px){
+	.content-box{   /*通知内容宽*/
+		width:350px;
+		margin:0 auto;
+	}
+	
+}
+
+/* 媒体查询结束 */
+/* 头部开始 */
+header{
+	height:50px;
+	line-height:50px;
+	background:rgba(0,0,0,.5);
+	display:-webkit-flex;
+	display:flex;
+	-webkit-justify-content:space-around;
+	justify-content:space-around;
+	color:#fff;
+}
+header i::before {
+	content:"";
+	display:block;
+	width:30px;
+	height:30px;
+	background:url(../img/logo.png);
+	background-size:100% 100%;
+}
+/* 头部结束 */
+
+/* 通知内容开始 */
+section{
+	margin-top:45px;
+}
+section  .content-text{
+	background:rgba(255,255,255,.7);
+	padding:20px;
+}
+section  .content-text p{
+	line-height:35px;
+	letter-spacing: 2px;
+	text-indent: 2em;
+}
+
+section .button{
+	display:-webkit-flex;
+	display:flex;
+	margin-top:30px;
+}
+section .button a{
+	color:#fff;
+	background:#0d9b71;
+	font-weight:bold;
+	font-size:18px;
+	height:53px;
+	line-height:31px;
+}
+section .button a:hover{
+	background:#0d9b82;
+}
+
+/* 通知内容结束 */

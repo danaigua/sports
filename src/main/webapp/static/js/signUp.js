@@ -59,11 +59,11 @@ function preserInfo() { // 当用户点击保存时，把所有的数据保存
 	for(let i = 0; i < info.length; i++) {
 		if(info.eq(i).val() != "") {
 			if (i === 0) {
-				infoObj.address = info.eq(i).val();
-			} else if (i === 1) {
 				infoObj.college = info.eq(i).val();
-			} else if (i === 2) {
+			} else if (i === 1) {
 				infoObj.department = info.eq(i).val();
+			} else if (i === 2) {
+				infoObj.address = info.eq(i).val();
 			}
 		};
 	};
@@ -211,8 +211,11 @@ layui.use('element', function() {
 	//触发事件
 	var active = {
 		loading: function(othis) {
-			$.post("/admin/student/save",{address:commonInfo[0].address,collegeName:commonInfo[0].college,
-				departmentName : commonInfo[0].department, studentJson:JSON.stringify(valueArr)},function(res){
+			$.post("/admin/student/save",{
+				collegeName:commonInfo[0].college,
+				departmentName : commonInfo[0].department,
+				address:commonInfo[0].address,
+				studentJson:JSON.stringify(valueArr)},function(res){
 					if(!res.success){
 						alert(res.errorInfo);
 					}

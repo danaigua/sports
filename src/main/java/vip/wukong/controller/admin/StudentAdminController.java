@@ -1,6 +1,7 @@
 package vip.wukong.controller.admin;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -600,9 +601,11 @@ public class StudentAdminController {
 					if(StringUtils.isNotEmpty(student2.getTrueName())) {
 						student2.setName(student2.getTrueName());
 					}
-					student2.setAddr(address);
-					student2.setCollege(collegeName);
-					student2.setDepartment(departmentName);
+					student2.setAddr(departmentName);
+					student2.setTime(new Date());
+					student2.setCollege(address);
+					student2.setProjectName(" ");
+					student2.setDepartment(collegeName);
 					if(StringUtils.isNotEmpty(student2.getSexName())) {
 						if("男".equals(student2.getSexName())) {
 							student2.setSex(1);

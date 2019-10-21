@@ -59,38 +59,32 @@
 			 <div class="layui-form-item">
     			<label class="layui-form-label">账号</label>
     			<div class="layui-input-block">
-      				<input type="text" name="title" autocomplete="off" placeholder="请输入标题" class="layui-input tip-input">
+      				<input type="text" name="title" autocomplete="off" placeholder="请输入账号" class="layui-input tip-input">
     			</div>
   			</div>
   			<div class="layui-form-item">
     			<label class="layui-form-label">姓名</label>
     			<div class="layui-input-block">
-      				<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input tip-input">
+      				<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入姓名" class="layui-input tip-input">
     			</div>
   			</div>
   			<div class="layui-form-item">
     			<label class="layui-form-label">电话</label>
     			<div class="layui-input-block">
-      				<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input tip-input">
+      				<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入电话" class="layui-input tip-input">
     			</div>
   			</div>
   			<div class="layui-form-item">
-    			<label class="layui-form-label">所属系部</label>
+  				<label class="layui-form-label">所属学院</label>
     			<div class="layui-input-inline">
-     				 <select name="quiz1" class="tip-input">
-       					 <option value="">请选择省</option>
-        				 <option value="浙江" selected="">计算机与科学系</option>
-       					 <option value="你的工号">会计系</option>
-       					 <option value="你最喜欢的老师">工商系</option>
+     				 <select name="college" class="tip-input form-theme">
+       					 <option value="">请选择学院</option>
       				</select>
     			</div>
-    			<label class="layui-form-label">所属学院</label>
+    			<label class="layui-form-label">所属系部</label>
     			<div class="layui-input-inline">
-     				 <select name="quiz1" class="tip-input">
-       					 <option value="">请选择省</option>
-        				 <option value="浙江" selected="">广州工商学院</option>
-       					 <option value="你的工号">二级学院</option>
-       					 <option value="你最喜欢的老师">国际学院</option>
+     				 <select name="quiz1" class="tip-input form-theme">
+       					 <option value="">请选择系部</option>
       				</select>
     			</div>
     		</div>
@@ -108,6 +102,28 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script>
+layui.use('form', function(){
+	var form = layui.form;
+	// 学院
+	$.post("/admin/college/combobox",
+	    	{},
+	    	function (res) {
+	    		for(let prop in res) {
+	    	    		$(".form-theme").eq(0).append(`<option value=` + res[prop] + `>` + res[prop] +`</option>`)
+	    		};
+	    		form.render();
+	 });
+	// 系部
+	$.post("/admin/department/combobox",
+	    	{},
+	    	function (res) {
+	    		for(let prop in res) {
+	    	    		$(".form-theme").eq(1).append(`<option value=` + res[prop] + `>` + res[prop] +`</option>`)
+	    		};
+	    		form.render();
+	    	});
+    form.render('select');   //表单渲染，得渲染才会有效果显示出来
+})
 //添加老师
 layui.use('layer', function(){ //独立版的layer无需执行这一句
   var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
@@ -120,7 +136,7 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
       layer.open({
         type: 1 //此处以iframe举例
         ,title: '添加老师信息'
-        ,area: ['600px', '520px']
+        ,area: ['700px', '520px']
         ,shade: 0
         ,maxmin: true
         ,offset: [ //为了演示，随机坐标
@@ -175,9 +191,6 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
   });
   
 });
-
-
-
     layui.use('table', function(){
     	var fieldData = "";
     	var fieldValue = "";

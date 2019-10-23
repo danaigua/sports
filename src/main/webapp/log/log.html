@@ -36,10 +36,18 @@
 		<form class="layui-form" action="">
 		  	<div class="layui-form-item">
 				<div class="layui-inline">
-      				<label class="layui-form-label">操作内容</label>
-      				<div class="layui-input-inline">
-       			 		<input type="text" name="content"  autocomplete="off" class="layui-input">
-      				</div>
+      				<label class="layui-form-label">操作类型</label>
+    				<div class="layui-input-inline">
+     				 	<select name="type" class="tip-input form-theme">
+       					 	<option value="">请选择类型</option>
+       					 	<option value="登录操作">登录操作</option>
+       					 	<option value="注销操作">注销操作</option>
+       					 	<option value="查询操作">查询操作</option>
+       					 	<option value="更新操作">更新操作</option>
+       					 	<option value="添加操作">添加操作</option>
+       					 	<option value="删除操作">删除操作</option>
+      					</select>
+    				</div>
     			</div>
     			<div class="layui-inline">
       				<label class="layui-form-label">操作用户</label>

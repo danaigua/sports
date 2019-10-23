@@ -80,7 +80,6 @@ function preserInfo() { // 当用户点击保存时，把所有的数据保存
 		var infoValue = $(".form-infor").eq(i).find(".layui-input");
 		for (var j = 0; j < infoValue.length; j++) { // 遍历学生姓名，班级，年级，性别
 			if (infoValue.eq(j).val() != "") { // 当不为空时，直接赋值
-				console.log("第二次赋值的对比数组=", contrast);
 				if (j === 0) {
 					valueObj.trueName = infoValue.eq(j).val();
 				} else if (j === 1) {
@@ -211,11 +210,13 @@ layui.use('element', function() {
 	//触发事件
 	var active = {
 		loading: function(othis) {
+			console.log(1);
 			$.post("/admin/student/save",{
 				collegeName:commonInfo[0].college,
 				departmentName : commonInfo[0].department,
 				address:commonInfo[0].address,
-				studentJson:JSON.stringify(valueArr)},function(res){
+				studentJson:JSON.stringify(infoArr)},function(res){
+					$('.submitName').removeAttr('data-type');
 					if(!res.success){
 						alert(res.errorInfo);
 					}
@@ -255,12 +256,8 @@ layui.use('element', function() {
 						othis.removeClass(DISABLED); // 移除禁止按钮样式
 						prog.css("display", "none"); // 进度条隐藏
 						tipText.text("<strong>提交成功!</strong><br>点击下一步进行项目报名!");
-						othis.text("下一步"); // 按钮换功能，跳转到下一步
-						othis.attr({
-							"data-type": "",
-							"onclick": "next()"
-						});
-						
+						othis.remove();
+						$('.bnt-next').css('display', 'block')
 					};
 					element.progress('demo', sum + '%');
 					// }
@@ -274,11 +271,8 @@ layui.use('element', function() {
 							othis.removeClass(DISABLED); // 移除禁止按钮样式
 							prog.css("display", "none"); // 进度条隐藏
 							tipText.html("<strong>提交成功!</strong><br>点击下一步进行项目报名!");
-							othis.text("下一步"); // 按钮换功能，跳转到下一步
-							othis.attr({
-								"data-type": "",
-								"onclick": "next()"
-							});
+							othis.remove();
+							$('.bnt-next').css('display', 'block')
 						}
 						element.progress('demo', sum + '%');
 					}())
@@ -287,11 +281,9 @@ layui.use('element', function() {
 			}, 1000 * Math.random())
 
 			othis.addClass(DISABLED); // 添加禁止按钮样式
-			console.log(infoArr);
 		}
 	};
 	$('.submitName').on('click', function() {
-		console.log(prog)
 		prog.css("display", "block"); // 进度条显示
 		var othis = $(this),
 			type = $(this).data('type');

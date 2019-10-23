@@ -39,8 +39,10 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public void save(Student student) {
 		// TODO Auto-generated method stub
-		student.setPassword(Md5Utils.md5(student.getName(), "sports"));
-		student.setbTime(new Date());
+		if(student.getId() == null) {
+			student.setPassword(Md5Utils.md5(student.getName(), "sports"));
+			student.setbTime(new Date());
+		}
 		studentRepository.save(student);
 	}
 

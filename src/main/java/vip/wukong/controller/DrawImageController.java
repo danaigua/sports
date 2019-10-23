@@ -31,7 +31,8 @@ public class DrawImageController {
 	 * @param request
 	 * @param response
 	 */
-	@RequestMapping(value = "/drawImage", produces = "text/html;charset=UTF-8;")
+//	@RequestMapping("/drawImage")
+	@RequestMapping(value = "/drawImage",produces={"application/json;","text/html;charset=UTF-8;"})
 	public void drawImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");

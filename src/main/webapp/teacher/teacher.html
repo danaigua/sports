@@ -59,31 +59,31 @@
 			 <div class="layui-form-item">
     			<label class="layui-form-label">账号</label>
     			<div class="layui-input-block">
-      				<input type="text" name="title" autocomplete="off" placeholder="请输入账号" class="layui-input tip-input">
+      				<input type="text" name="title"  autocomplete="off" placeholder="请输入账号" class="layui-input tip-input">
     			</div>
   			</div>
   			<div class="layui-form-item">
     			<label class="layui-form-label">姓名</label>
     			<div class="layui-input-block">
-      				<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入姓名" class="layui-input tip-input">
+      				<input type="text" name="title"  lay-verify="title" autocomplete="off" placeholder="请输入姓名" class="layui-input tip-input">
     			</div>
   			</div>
   			<div class="layui-form-item">
     			<label class="layui-form-label">电话</label>
     			<div class="layui-input-block">
-      				<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入电话" class="layui-input tip-input">
+      				<input type="text" name="title"  lay-verify="title" autocomplete="off" placeholder="请输入电话" class="layui-input tip-input">
     			</div>
   			</div>
   			<div class="layui-form-item">
   				<label class="layui-form-label">所属学院</label>
     			<div class="layui-input-inline">
-     				 <select name="college" class="tip-input form-theme">
+     				 <select name="college"  class="tip-input  form-theme">
        					 <option value="">请选择学院</option>
       				</select>
     			</div>
     			<label class="layui-form-label">所属系部</label>
     			<div class="layui-input-inline">
-     				 <select name="quiz1" class="tip-input form-theme">
+     				 <select name="quiz1"  class="tip-input  form-theme">
        					 <option value="">请选择系部</option>
       				</select>
     			</div>
@@ -91,10 +91,9 @@
     		<div class="layui-form-item layui-form-text">
     			<label class="layui-form-label">备注</label>
    				 <div class="layui-input-block">
-      				<textarea placeholder="请输入内容" class="layui-textarea tip-input"></textarea>
+      				<textarea placeholder="请输入内容"  class="layui-textarea layui-input tip-input"></textarea>
     			</div>
   			</div>
-  			
 		</form>
 	</div>
 	<table class="layui-hide" id="teacher" lay-filter="test"></table>
@@ -147,31 +146,68 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
         ,btn: ['提交', '关闭'] //只是为了演示
         ,yes: function(){
           let value = [];
+          
           for(let i = 0; i < $(".tip-input").length; i ++){
         	  value[i] = $(".tip-input").eq(i).val();
           };
-          console.log("提交了")
-          console.log(value)
-          $.post("/admin/teacher/save",
-        	{
-        	  name : value[0],  // 账号
-        	  trueName : value[1], // 姓名
-        	  telephone : value[2], // 电话
-        	  department : value[3], // 所属系部
-        	  college : value[4], // 所属学院
-        	  remarks : value[5]  // 备注
-        	},
-        	function (res) {
-        		if(res.success){
-        			layer.closeAll();
-        		}else{
-        			layui.msg(res.errorInfo);
-        		}
-        	}
-          )
-          
-          $(that).click(); 
-          
+          var flag = false;
+          let num = 0;
+          console.log($(".tip-input").length)
+          for(let i = 0; i < $(".tip-input").length; i ++) {
+        	  if($(".tip-input").eq(i).val() == '') {
+        		  alert('信息未完善!');
+        		  num = 0;
+        		  break;
+        	  } else {
+        		  num = 1;
+        	  }
+          };
+          console.log(flag)
+          if(num == 1) {
+        	  flag = true;
+          }
+          if(flag) {
+        	  $.post("/admin/teacher/save",
+        	        	{
+        	        	  name : value[0],  // 账号
+        	        	  trueName : value[1], // 姓名
+        	        	  telephone : value[2], // 电话
+        	        	  department : value[3], // 所属系部
+        	        	  college : value[4], // 所属学院
+        	        	  remarks : value[5]  // 备注
+        	        	},
+        	        	function (res) {
+        	        		if(res.success){
+        	        			layer.closeAll();
+        	        		}else{
+        	        			layui.msg(res.errorInfo);
+        	        		};
+        	        		// 提示提交成功
+        	        		layui.use('layer', function(){ //独立版的layer无需执行这一句
+        	        			var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+        	        			var active = {
+        	        			offset: function(othis){
+        	        			      var type = othis.data('type');
+        	        			      
+        	        			      layer.open({
+        	        			        type: 1
+        	        			        ,offset: type //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+        	        			        ,id: 'layerDemo'+type //防止重复弹出
+        	        			        ,content: '<div style="padding: 20px 100px;">提交成功!</div>'
+        	        			        ,btn: '关闭'
+        	        			        ,btnAlign: 'c' //按钮居中
+        	        			        ,shade: 0 //不显示遮罩
+        	        			        ,yes: function(){
+        	        			          layer.closeAll();
+        	        			        }
+        	        			      });
+        	        			    }
+        	        			};
+        	        			var othis = $(this);
+        	        			active['offset'] ? active['offset'].call(this, othis) : '';
+        	        		});
+        	        	});
+          }
         }
         ,btn2: function(){
           layer.closeAll();
@@ -282,6 +318,7 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
   	  	});
     });
     
+ 
 
 </script>
 </body>

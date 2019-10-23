@@ -76,7 +76,7 @@
     			</div>
     			<div class="layui-inline submit-box" id="layerDemo">
    				 	<button type="button" lay-submit class="layui-btn" lay-filter="LAY-user-front-search">生成</button>
-   				 	<button type="button" lay-submit class="layui-btn" data-method="setTop" lay-filter="LAY-user-front-search">添加规则</button>
+   				 	<button type="button" class="layui-btn" data-method="setTop" lay-filter="LAY-user-front-search">添加规则</button>
    				</div>
     	   </div>
 		</form>
@@ -117,25 +117,25 @@
     			<div class="layui-inline">
       				<label class="layui-form-label">组数</label>
       				<div class="layui-input-inline">
-       			 		<input type="number" name="groupNum"  autocomplete="off" class="layui-input tip-input">
+       			 		<input type="number" name="groupNum"  autocomplete="off" class="layui-input  tip-input">
       				</div>
     			</div>
     			<div class="layui-inline first">
       				<label class="layui-form-label">男生人数</label>
       				<div class="layui-input-inline">
-       			 		<input type="number" name="boyNum"  autocomplete="off" class="layui-input tip-input">
+       			 		<input type="number" name="boyNum"  autocomplete="off" class="layui-input  tip-input">
       				</div>
     			</div>
     			<div class="layui-inline first">
       				<label class="layui-form-label">女生人数</label>
       				<div class="layui-input-inline">
-       			 		<input type="number" name="girlNum"  autocomplete="off" class="layui-input tip-input">
+       			 		<input type="number" name="girlNum"  autocomplete="off" class="layui-input  tip-input">
       				</div>
     			</div>
     			<div class="layui-inline second">
       				<label class="layui-form-label">每组人数</label>
       				<div class="layui-input-inline">
-       			 		<input type="number" name="studentNum"  autocomplete="off" class="layui-input tip-input">
+       			 		<input type="number" name="studentNum"  autocomplete="off" class="layui-input  tip-input">
       				</div>
     			</div>
     		</div>
@@ -149,22 +149,31 @@
 		</form>
 		<script src="../static/jquery/jquery.js"></script>
 <script>
+setTimeout(function(){
+	//树形结构表单搭建
+	layui.use(['tree', 'table', 'util', 'form'], function() {
+		var tree = layui.tree,
+			layer = layui.layer,
+			util = layui.util,
+			table = layui.table,
+			form = layui.form;
 		// 请求数据获取项目
-		$.post("/admin/project/combobox",
-		function (res){
+		$.post("/admin/project/combobox",function (res){
 			for(let prop in res){
 				$(".statement").eq(0).append(`<option value=` + prop + `>` + res[prop] +`</option>`);
 			}
-			
+			form.render();
 		});
 		// 请求数据获取规则
-		$.post("/admin/rule/combobox",
-				function (res){
-					for(let prop in res){
-						$(".statement").eq(1).append(`<option value=` + prop + `>` + res[prop] +`</option>`)
-					}
-					
-				});
+		$.post("/admin/rule/combobox",function (res){
+				for(let prop in res){
+					$(".statement").eq(1).append(`<option value=` + prop + `>` + res[prop] +`</option>`)
+				}
+				form.render();
+			});
+		});
+}, 250)
+		
 //添加规则
 layui.use('layer', function(){ //独立版的layer无需执行这一句
 	  var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
@@ -198,29 +207,29 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
 	        	  if(i == 5 && (value[i]==null || value[i]=="")){
 	        		  value[i] = 0;
 	        	  }
+	        	  if(i == 6 && (value[i]==null || value[i]=="")){
+	        		  value[i] = 0;
+	        	  }
 	          };
 	          $.post("/admin/rule/save",
 	        	{
-	        	  name : value[0],  // 账号
-	        	  isSex : value[1], // 姓名
-	        	  isDepartment : value[2], // 电话
-	        	  boyNum : value[3], // 所属系部
-	        	  girlNum : value[4], // 所属学院
-	        	  studentNum : value[5],  // 备注
-	        	  remarks : value[6]  // 备注
+	        	  name : value[0],
+	        	  isSex : value[1],
+	        	  isDepartment : value[2],
+	        	  groupNum : value[3],
+	        	  boyNum : value[4], 
+	        	  girlNum : value[5], 
+	        	  studentNum : value[6],
+	        	  remarks : value[7]  // 备注
 	        	},
 	        	function (res) {
 	        		if(res.success){
 	        			alert("添加规则成功，请刷新页面");
 	        			layer.closeAll();
-	        			
 	        		}else{
 	        			alert(res.errorInfo);
 	        		}
-	        	}
-	          )
-	          $(that).click(); 
-	          
+	        	});
 	        }
 	        ,btn2: function(){
 	          layer.closeAll();
@@ -250,7 +259,7 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
         	form = layui.form;
         table.render({
             elem: '#students'
-            ,url:'/admin/student/getSortStudent?' + fieldData
+            ,url:'/admin/student/getSortStudent1?' + fieldData
             ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
             ,defaultToolbar: ['filter', 'exports', 'print']
         	,title: '比赛分组表'

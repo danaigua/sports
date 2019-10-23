@@ -127,7 +127,7 @@ public class TeacherAdminController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", 0);
 		map.put("msg", "");
-		map.put("data", teacherService.list(teacher, page - 1, limit, Direction.ASC, "time"));
+		map.put("data", teacherService.list(teacher, page - 1, limit, Direction.DESC, "time"));
 		map.put("count", teacherService.getCount(teacher));
 		logService.save(new Log(Log.SEARCH_ACTION, "查询所有的教师"));
 		return map;

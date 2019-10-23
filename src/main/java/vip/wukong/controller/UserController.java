@@ -60,11 +60,11 @@ public class UserController {
 		String code = (String) session.getAttribute("checkcode");
 		Subject subject = SecurityUtils.getSubject();
 		UsernamePasswordToken token = new UsernamePasswordToken(userName, Md5Utils.md5(password, "sports"));
-		if (!vercode.equals(code)) {
-			map.put("success", false);
-			map.put("errorInfo", "验证码错误");
-			return map;
-		}
+//		if (!vercode.equals(code)) {
+//			map.put("success", false);
+//			map.put("errorInfo", "验证码错误");
+//			return map;
+//		}
 		Student student = studentService.findByStudentName(userName);
 		Teacher teacher = teacherService.findByTeacherName(userName);
 		if (teacher != null) {

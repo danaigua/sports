@@ -29,5 +29,4 @@ public interface StudentRepository extends JpaRepository<Student, Integer>, JpaS
 	@Query(value = "select * from t_student where addr = ?1", nativeQuery = true)
 	public List<Student> findBySchoolAddrName(String name);
 	
-	
 }

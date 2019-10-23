@@ -120,6 +120,9 @@ body{
  * 填写个人信息结束
  */
 /* 提示框开始 */
+.bnt-next{
+	display:none;
+}
 #sign > .tip{
 	width:400px;
 	position:absolute;

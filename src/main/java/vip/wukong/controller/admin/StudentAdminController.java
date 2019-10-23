@@ -105,6 +105,8 @@ public class StudentAdminController {
 		map.put("msg", "");
 		int[] sex = { 1, 2 };
 		String projectName = "";
+		int maxBoyNum = 0;//最多的男生数量组
+		int maxGirlNum = 0;//最多的女生数量组
 		if (projectId != null && ruleId != null) {
 			Project project = projectService.findById(projectId);
 			if (StringUtils.isEmpty(year)) {
@@ -116,7 +118,6 @@ public class StudentAdminController {
 			Rule rule = ruleService.findById(ruleId);
 			List<Department> departmentList = departmentService.listAll();
 			List<College> colegeList = collegeService.listAll();
-
 			for (Department department : departmentList) {
 				if (StringUtils.isEmpty(department.getName())) {
 					continue;
@@ -146,12 +147,14 @@ public class StudentAdminController {
 						for (Student s : departmentStudentList) {
 							tempBoyResult.add(s);
 						}
+						maxBoyNum = maxBoyNum > departmentStudentList.size() ? maxBoyNum : departmentStudentList.size();
 					} else if (i == 1 && departmentStudentList.size() != 0) {
 						indexGirlNameList.add(department.getName());
 						studentGirlMap.put(department.getName(), departmentStudentList);
 						for (Student s : departmentStudentList) {
 							tempGirlResult.add(s);
 						}
+						maxGirlNum = maxGirlNum > departmentStudentList.size() ? maxGirlNum : departmentStudentList.size();
 					}
 				}
 			}
@@ -188,13 +191,16 @@ public class StudentAdminController {
 						for (Student s : collegeStudnetList) {
 							tempBoyResult.add(s);
 						}
+						maxBoyNum = maxBoyNum > collegeStudnetList.size() ? maxBoyNum : collegeStudnetList.size();
 					} else if (i == 1 && collegeStudnetList.size() != 0) {
 						indexGirlNameList.add(college.getName());
 						studentGirlMap.put(college.getName(), collegeStudnetList);
 						for (Student s : collegeStudnetList) {
 							tempGirlResult.add(s);
 						}
+						maxGirlNum = maxGirlNum > collegeStudnetList.size() ? maxGirlNum : collegeStudnetList.size();
 					}
+					
 				}
 			}
 			// 得到各个系的人数
@@ -275,35 +281,60 @@ public class StudentAdminController {
 				int girlTeamNum = rule.getGirlNum();// 获得男生一组需要分多少人
 				int boyNum = tempBoyResult.size();// 实际上的男生人数
 				int girlNum = tempGirlResult.size();// 实际上的女生人数
-				String radomBoyString = MathUtils.getNumberNoRepeat(boyNum);// 获取男生的随机数
-				String radomGirlString = MathUtils.getNumberNoRepeat(girlNum);// 获取女生的随机数
-				String[] radomBoyStrings = radomBoyString.split(",");
-				String[] radomGirlStrings = radomGirlString.split(",");
+				List<Student> tmpBoyStudentList = new ArrayList<Student>();
+				List<Student> tmpGirlStudentList = new ArrayList<Student>();
 				int s = 0;// 记录队伍数
 				int m = 0;// 记录下标数
 				int n = 0;// 记录下标数
 				// 存到一个集合里面
-				int forNum = boyNum % boyTeamNum == 0 ? boyNum / boyTeamNum : boyNum / boyTeamNum + 1;// 得到一个组实际上的组数
-				for (int i = 0; i < forNum; i++) {
-					s++;
-					for (int j = 0; j < boyTeamNum; j++) {
-						if (m < boyNum) {
-							Student student = tempBoyResult.get(Integer.parseInt(radomBoyStrings[m]));
-							m++;
-							student.setQueue("第" + s + "队第" + (j + 1) + "号");
-							result.add(student);
+				for(int i = 0; i < maxBoyNum; i++) {
+					for(String str : indexBoyNameList) {
+						if(i < studentBoyMap.get(str).size()) {
+							tmpBoyStudentList.add(studentBoyMap.get(str).get(i));
 						}
 					}
 				}
+				int forNum = boyNum % boyTeamNum == 0 ? boyNum / boyTeamNum : boyNum / boyTeamNum + 1;// 得到一个组实际上的组数
 				for (int i = 0; i < forNum; i++) {
 					s++;
-					for (int j = 0; j < girlTeamNum; j++) {
-						if (n < girlNum) {
-							Student student = tempGirlResult.get(Integer.parseInt(radomGirlStrings[n]));
-							n++;
-							student.setQueue("第" + s + "队第" + (j + 1) + "号");
-							result.add(student);
+					List<Student> pStudent = new ArrayList<Student>();
+					for (int j = 0; j < boyTeamNum; j++) {
+						if(m < boyNum) {
+							pStudent.add(tmpBoyStudentList.get(m));
+							m++;
 						}
+					}
+					String radomBoyString = MathUtils.getNumberNoRepeat(pStudent.size());
+					String[] radomBoyStrings = radomBoyString.split(",");
+					for(int ii = 0 ; ii < pStudent.size(); ii++) {
+						Student ss = pStudent.get(Integer.parseInt(radomBoyStrings[ii]));
+						ss.setQueue("男生第" + s + "队第" + (ii + 1) + "号");
+						result.add(ss);
+					}
+				}
+				for(int i = 0; i < maxGirlNum; i++) {
+					for(String str : indexGirlNameList) {
+						if(i < studentGirlMap.get(str).size()) {
+							tmpGirlStudentList.add(studentGirlMap.get(str).get(i));
+						}
+					}
+				}
+				int forGirlNum = girlNum % girlTeamNum == 0 ? girlNum / girlTeamNum : girlNum / girlTeamNum + 1;// 得到一个组实际上的女生组数
+				for (int i = 0; i < forGirlNum; i++) {
+					s++;
+					List<Student> pStudent = new ArrayList<Student>();
+					for (int j = 0; j < girlTeamNum; j++) {
+						if(n < girlNum) {
+							pStudent.add(tmpGirlStudentList.get(n));
+							n++;
+						}
+					}
+					String radomGirlString = MathUtils.getNumberNoRepeat(pStudent.size());
+					String[] radomGirlStrings = radomGirlString.split(",");
+					for (int j = 0; j < pStudent.size(); j++) {
+						Student ss = pStudent.get(Integer.parseInt(radomGirlStrings[j]));
+						ss.setQueue("女生第" + s + "队第" + (j + 1) + "号");
+						result.add(ss);
 					}
 				}
 				logService.save(new Log(Log.SEARCH_ACTION, "生成比赛报表"));
@@ -311,6 +342,7 @@ public class StudentAdminController {
 				map.put("msg", "");
 				map.put("data", result);
 				return map;
+				
 			} else if (rule.getIsSex() == 2 && rule.getIsDepartment() == 1) {
 				// 不分男女，但是一个系一个队
 				// indexNameList名称下表，可以取到系/院的集合值
@@ -341,7 +373,7 @@ public class StudentAdminController {
 				map.put("data", result);
 				return map;
 			} else if (rule.getIsSex() == 2 && rule.getIsDepartment() == 2) {
-
+				/**
 				// 获取学生的集合
 				// studnetByNameMap 存放这一个院/系有多少个人
 				// indexNameList1存放着studnetByNameMap的索引
@@ -455,6 +487,87 @@ public class StudentAdminController {
 				map.put("msg", "");
 				map.put("data", result);
 				return map;
+				*/
+				//上帝法则加人工干预
+				Map<String, List<Student>> studentMap1 = new HashMap<String, List<Student>>();
+				List<String> strList = new ArrayList<String>();
+				List<Student> tmpResult = new ArrayList<Student>();
+				int maxList = 0;
+				if (StringUtils.isEmpty(year)) {
+					projectName = DateUtils.getCurrentYear() + project.getName();
+				} else {
+					projectName = year + project.getName();
+				}
+				for (Department department : departmentList) {
+					if (StringUtils.isEmpty(department.getName())) {
+						continue;
+					}
+					Student s_student_all = new Student();
+					s_student_all.setAddr(address);
+					s_student_all.setDepartment(department.getName());
+					s_student_all.setProjectName(projectName);
+					List<Student> departmentStudentList = studentService.listNoPage(s_student_all);
+					if (departmentStudentList.size() != 0) {
+						studentMap1.put(department.getName(), departmentStudentList);
+						strList.add(department.getName());
+						maxList = departmentStudentList.size() > maxList ? departmentStudentList.size() : maxList;
+					}
+				}
+				for (College college : colegeList) {
+					if ("广州工商学院".equals(college.getName())) {
+						continue;
+					}
+					if (StringUtils.isEmpty(college.getName())) {
+						continue;
+					}
+					Student s_student = new Student();
+					s_student.setAddr(address);
+					s_student.setCollege(college.getName());
+					s_student.setProjectName(projectName);
+					List<Student> collegeStudnetList = studentService.listNoPage(s_student);
+					if (collegeStudnetList.size() != 0) {
+						studentMap1.put(college.getName(), collegeStudnetList);
+						strList.add(college.getName());
+						maxList = collegeStudnetList.size() > maxList ? collegeStudnetList.size() : maxList;
+					}
+				}
+				// 均匀分布
+				for (int i = 0; i < maxList; i++) {
+					for (String str : strList) {
+						if (i < studentMap1.get(str).size()) {
+							tmpResult.add(studentMap1.get(str).get(i));
+						}
+					}
+				}
+				// 分组
+				int studentNums = rule.getStudentNum();
+				int count = tmpResult.size();
+				int n = 0;
+				int q = 0;
+				int teamNums = count % studentNums == 0 ? count / studentNums : count / studentNums + 1;
+				for (int j = 0; j < teamNums; j++) {
+					q++;
+					List<Student> students = new ArrayList<Student>();
+					for (int i = 0; i < studentNums; i++) {
+						if (n < count) {
+							students.add(tmpResult.get(n));
+							n++;
+						}
+					}
+					String radomPersonString = MathUtils.getNumberNoRepeat(students.size());
+					String[] radomPersonStrings = radomPersonString.split(",");
+					for (int i = 0; i < students.size(); i++) {
+						Student student = students.get(Integer.parseInt(radomPersonStrings[i]));
+						student.setQueue("第" + q + "队第" + (i + 1) + "号");
+						result.add(student);
+					}
+					
+				}
+				map.put("code", 0);
+				map.put("msg", "");
+				map.put("data", result);
+				logService.save(new Log(Log.SEARCH_ACTION, "生成比赛报表"));
+				return map;
 			}
 		}
 		map.put("code", 0);
@@ -462,46 +575,6 @@ public class StudentAdminController {
 		map.put("data", studentService.listNoPage(null));
 		logService.save(new Log(Log.SEARCH_ACTION, "生成比赛报表"));
 		return map;
-	}
-
-	/**
-	 * 递归判断是否重复
-	 * 
-	 * @param collegeOrDepartmentNum
-	 * @param set
-	 * @param student
-	 * @param length
-	 */
-	private Student repetitionOrNot(List<Student> tempResult, String[] radomPersonStrings, int x, List<Integer> numList,
-			int collegeOrDepartmentNum, Set<String> set, int count) {
-		Student student = tempResult.get(Integer.parseInt(radomPersonStrings[x]));
-		int length = set.size();
-		boolean flag = true;
-		if ("广州工商学院".equals(student.getCollege())) {
-			set.add(student.getDepartment());
-		} else {
-			set.add(student.getCollege());
-		}
-		if (set.size() < collegeOrDepartmentNum && length == set.size()) {
-			numList.add(x);
-			x++;
-			if (x < count) {
-				while (flag) {
-					Student student1 = tempResult.get(Integer.parseInt(radomPersonStrings[x]));
-					if ("广州工商学院".equals(student1.getCollege())) {
-						set.add(student1.getDepartment());
-					} else {
-						set.add(student1.getCollege());
-					}
-					if (length != set.size()) {
-						flag = false;
-					} else {
-						x++;
-					}
-				}
-			}
-		}
-		return student;
 	}
 
 	/**

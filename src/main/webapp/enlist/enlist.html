@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>校运会报名</title>
+<link href="../static/libs/layui/css/layui.css" rel="stylesheet">
+<link href="../static/css/base.css" rel="stylesheet">
+<link href="../static/css/enlist.css" rel="stylesheet">
+</head>
+<body>
+	<div class="layui-container">
+	<h2>广州工商学院校运会报名</h2>
+	<form class="layui-form" action="">
+		<div class="layui-form-item">
+			<div class="layui-inline">
+				<label class="layui-form-label">学院</label>
+				<div class="layui-input-inline">
+					<select name="college" class="form-theme">
+						<option value="">请选择</option>
+					</select>
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label">系部</label>
+				<div class="layui-input-inline">
+					<select name="department" class="form-theme">
+						<option value="">请选择</option>
+					</select>
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label">校区</label>
+				<div class="layui-input-inline">
+					<select name="addr" class="form-theme">
+						<option value="">请选择</option>
+						<option value="花都校区">花都校区</option>
+						<option value="三水校区">三水校区</option>
+					</select>
+				</div>
+			</div>
+		</div>
+    	<div class="layui-form-item">
+    		<div class="layui-inline">
+      			<label class="layui-form-label">姓名</label>
+      			<div class="layui-input-inline">
+        			<input type="text" name="trueName" lay-verify="required|phone" placeholder="姓名" autocomplete="off" class="layui-input">
+      			</div>
+    		</div>
+    		<div class="layui-inline">
+      			<label class="layui-form-label">班级</label>
+      			<div class="layui-input-inline">
+        			<input type="text" name="clazz" lay-verify="required|phone" placeholder="班级" autocomplete="off" class="layui-input">
+      			</div>
+    		</div>
+    		<div class="layui-inline">
+      			<label class="layui-form-label">年级</label>
+      			<div class="layui-input-inline">
+        			<input type="text" name="grade" lay-verify="required|phone" placeholder="年级" autocomplete="off" class="layui-input">
+      			</div>
+    		</div>
+    	</div>
+    	<div class="layui-form-item">
+    		<div class="layui-inline">
+      			<label class="layui-form-label">电话</label>
+      			<div class="layui-input-inline">
+        			<input type="text" name="telephone" placeholder="电话" lay-verify="required|phone" autocomplete="off" class="layui-input">
+      			</div>
+    		</div>
+    		<div class="layui-inline">
+      			<label class="layui-form-label">学号</label>
+      			<div class="layui-input-inline">
+        			<input type="text" name="studentNumber" placeholder="学号" lay-verify="required|phone" autocomplete="off" class="layui-input">
+      			</div>
+    		</div>
+    		<div class="layui-inline">
+      			<label class="layui-form-label">专业</label>
+      			<div class="layui-input-inline">
+        			<input type="text" name="major" placeholder="专业" lay-verify="required|phone" autocomplete="off" class="layui-input">
+      			</div>
+    		</div>
+    	</div>
+    	<div class="layui-form-item">
+    		<div class="layui-inline">
+				<label class="layui-form-label">性别</label>
+				<div class="layui-input-inline">
+					<select name="sex" class="form-sex">
+						<option value="">请选择</option>
+						<option value="1">男</option>
+						<option value="2">女</option>
+					</select>
+				</div>
+			</div>
+    	</div>
+    	<button type="button" class="layui-btn layui-btn-lg form-submit">提交</button>
+	</form>
+	</div>
+	<script src="../static/libs/jquery/jquery.js"></script>
+	<script src="../static/libs/layui/layui.js"></script>
+	<script>
+		  layui.use('form', function(){
+				var form = layui.form;
+				// 学院
+		    	$.post("/admin/college/combobox",
+		    	    	{},
+		    	    	function (res) {
+		    	    		for(let prop in res) {
+		    	    	    		$(".form-theme").eq(0).append(`<option value=` + res[prop] + `>` + res[prop] +`</option>`)
+		    	    		};
+		    	    		form.render();
+		    	 });
+		    	// 系部
+		    	$.post("/admin/department/combobox",
+		    	    	{},
+		    	    	function (res) {
+		    	    		for(let prop in res) {
+		    	    	    		$(".form-theme").eq(1).append(`<option value=` + res[prop] + `>` + res[prop] +`</option>`)
+		    	    		};
+		    	    		form.render();
+		    	    	});
+                form.render('select');   //表单渲染，得渲染才会有效果显示出来
+            })
+            
+            $(".form-submit").click(function () {
+            	$.post("/student/save",
+            		{
+            		college : $('.form-theme').eq(0).val(), // 学院
+            		department : $('.form-theme').eq(1).val(), // 系部
+            		addr : $('.form-theme').eq(2).val(), // 校区
+            		trueName : $('.layui-input').eq(3).val(), // 姓名
+            		clazz : $('.layui-input').eq(4).val(), // 班级
+            		grade : $('.layui-input').eq(5).val(), // 年级
+            		telephone : $('.layui-input').eq(6).val(), // 电话
+            		studentNumber : $('.layui-input').eq(7).val(), // 学号
+            		major : $('.layui-input').eq(8).val(), // 专业
+            		sex : $(".form-sex").val() // 性别
+            		},
+            		function (res) {
+            			if(res.success){
+            				alert("上传信息成功");
+            			}else{
+            				alert("上传信息失败，请联系管理员！");
+            			}
+            			$('.layui-form').submit();
+            		}
+            	)
+            })
+	</script>
+</body>
+</html>

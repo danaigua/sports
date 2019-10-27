@@ -1,0 +1,26 @@
+.search-theme{
+	margin-top:40px;
+	margin-bottom:30px;
+	text-align:center;
+	font-weight:bold;
+}
+.layui-form-label{
+	width:35px;
+}
+.content{
+	margin:40px 0;
+	text-align:center;
+}
+.tip-box{
+	padding:30px 0;
+	text-align:center;
+}
+.tip-box>span {
+	font-weight:bold;
+	margin-bottom:10px;
+	font-size:17px;
+	display:inline-block;
+}
+.tip-box>p{
+	font-size:18px;
+}

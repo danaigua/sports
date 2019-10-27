@@ -71,7 +71,7 @@ public class ProjectAdminController {
 		for (Project project : projectList) {
 			map.put(project.getId(), project.getName());
 		}
-		logService.save(new Log(Log.SEARCH_ACTION, "查询所有的项目名称"));
+		//logService.save(new Log(Log.SEARCH_ACTION, "查询所有的项目名称"));
 		return map;
 	}
 	/**
@@ -218,8 +218,10 @@ public class ProjectAdminController {
 	 * @return
 	 */
 	@RequestMapping("/save")
-	public Map<String, Object> save(Project project, @RequestParam(value = "parentId")Integer parentId,
-			@RequestParam(value = "projectName")String projectName
+	public Map<String, Object> save(Project project, 
+			@RequestParam(value = "parentId")Integer parentId,
+			@RequestParam(value = "projectName")String projectName,
+			@RequestParam(value = "collegeOrProjectNum")String collegeOrProjectNum
 			)throws Exception{
 		Map<String, Object> map = new HashMap<String, Object>();
 		projectService.findByName(projectName);
@@ -228,6 +230,7 @@ public class ProjectAdminController {
 			map.put("success", true);
 		}
 		if(project.getId() == null) {
+			project.setCollegeOrDepartmentNum(collegeOrProjectNum);
 			project.setTotalPerson(0);//初始化为0
 			Project parentProject = projectService.findById(parentId);
 			parentProject.setState(1);//把状态设置为1

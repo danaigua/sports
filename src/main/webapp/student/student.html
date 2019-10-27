@@ -25,6 +25,9 @@
 	.submit-box{
 		padding-left:87px;
 	}
+	.form-bnt{
+		margin-left:87px
+	}
 </style>
 <body>
 	<div class="form-box">
@@ -85,10 +88,17 @@
       					</select>
       				</div>
     			</div>
-   				 <div class="layui-inline submit-box">
-   				 	<button type="button" lay-submit class="layui-btn" lay-filter="LAY-user-front-search">搜索</button>
-   				 </div>
+    			<div class="layui-inline">
+      				<label class="layui-form-label">年度</label>
+      				<div class="layui-input-inline">
+       			 		<select name="yearStr" lay-filter="aihao" class="project-name">
+        						<option value=""></option>
+      					</select>
+      				</div>
+    			</div>
+   				 
     	   </div>
+   		   <button type="button" lay-submit class="layui-btn form-bnt" lay-filter="LAY-user-front-search">搜索</button>
 		</form>
 	</div>
 	<table class="layui-hide" id="students" lay-filter="test"></table>
@@ -104,6 +114,9 @@
         table.render({
             elem: '#students'
             ,url:'/admin/student/list?' + fieldData
+            ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            ,defaultToolbar: ['filter', 'exports', 'print']
+            ,title: '学生表'
             ,page: true
             ,skin: 'line' //行边框风格
             ,even: true //开启隔行背景
@@ -146,7 +159,7 @@
             var layEvent  = obj.event;
             switch (layEvent) {
                 case 'del':
-                    layer.confirm('确定要删除该用户？', function(index){
+                    layer.confirm('确定要删除该学生？', function(index){
                         $.post("/admin/student/delete",{id:data.id},function (ret) {
                             if(ret.success){
                                 layer.msg('删除成功', function () {
@@ -203,6 +216,15 @@
     	    	function (res) {
     	    		for(let prop in res) {
     	    	    		$(".project-name").eq(0).append(`<option value=` + prop + `>` + res[prop] +`</option>`)
+    	    		};
+    	    		form.render();
+    	    	});
+    	// 年度
+    	$.post("/admin/year/combobox",
+    	    	{},
+    	    	function (res) {
+    	    		for(let prop in res) {
+    	    	    		$(".project-name").eq(3).append(`<option value=` + res[prop] + `>` + res[prop] +`</option>`)
     	    		};
     	    		form.render();
     	    	});

@@ -127,8 +127,7 @@ public class RuleAdminController {
 					i = Integer.parseInt(value);
 					r.setGroupNum(i);
 				}else if("remarks".equals(field)) {
-					i = Integer.parseInt(value);
-					r.setGroupNum(i);
+					r.setRemarks(value);
 				}
 				ruleService.save(r);
 				logService.save(new Log(Log.UPDATE_ACTION, "修改一条规则" + r));

@@ -8,7 +8,7 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://localhost:3306/db_sports
       username: root
-      password: root
+      password: 134176
    jpa:
      hibernate.ddl-auto: update
      show-sql: true

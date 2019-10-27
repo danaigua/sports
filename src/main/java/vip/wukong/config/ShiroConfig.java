@@ -49,6 +49,13 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put("/static/**", "anon");
 		filterChainDefinitionMap.put("/user/login", "anon");
 		filterChainDefinitionMap.put("/drawImage", "anon");
+		filterChainDefinitionMap.put("/student/save", "anon");
+		filterChainDefinitionMap.put("/student/project/**", "anon");
+		filterChainDefinitionMap.put("/enlist/**", "anon");
+		filterChainDefinitionMap.put("/admin/project/combobox", "anon");
+		filterChainDefinitionMap.put("/admin/department/combobox", "anon");
+		filterChainDefinitionMap.put("/admin/college/combobox", "anon");
+		filterChainDefinitionMap.put("/student/searchStudentProject", "anon");
 
 		// 配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
 		filterChainDefinitionMap.put("/logout", "logout");

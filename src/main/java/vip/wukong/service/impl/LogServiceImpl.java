@@ -50,7 +50,7 @@ public class LogServiceImpl implements LogService {
 		log.setTime(new Date());
 		String userName = SecurityUtils.getSubject().getPrincipal().toString();
 		Teacher teacher = teacherRepository.findByTeacherName(userName);
-		Student student = studentRepository.findByStudentName(userName);
+		Student student = studentRepository.findByStudentName(userName).get(0);
 		String user = "";
 		if(teacher != null) {
 			user = "(" + teacher.getName() + ")" + teacher.getTrueName();

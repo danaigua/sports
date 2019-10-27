@@ -212,63 +212,76 @@ public class StudentAdminController {
 				// 获取到每个系参加比赛的男女人数
 				// 分队----分成几组----一组多少个学生
 				// 男生组
-				for (String str : indexBoyNameList) {
-					if ("广州工商学院".equals(str)) {
-						continue;
-					}
-					// 得到索引值
-					List<Student> studentList = studentBoyMap.get(str);
-					int boyStudentQueue = studentList.size() % rule.getBoyNum() == 0
-							? studentList.size() / rule.getBoyNum()
-							: studentList.size() / rule.getBoyNum() + 1;
-					// 如果不等于0并且男生集合的长度大于零说明凑不满一队，则弄为一队
-					if (boyStudentQueue == 0 && studentList.size() != 0) {
-						boyStudentQueue = 1;
-					}
-					int queue = 0;
-					if (boyStudentQueue > 0) {
-						int s = 0;
-						for (int k = 0; k < boyStudentQueue; k++) {
-							queue++;
-							for (int l = 0; l < rule.getBoyNum(); l++) {
-								s++;
-								if (s < studentList.size()) {
-									studentList.get(s).setQueue(str + "男生第" + queue + "队第" + (l + 1) + "号");
-									result.add(studentList.get(s));
-								}
-							}
+				if(rule.getBoyNum() != 0) {
+					
+					for (String str : indexBoyNameList) {
+						if ("广州工商学院".equals(str)) {
+							continue;
 						}
+						// 得到索引值
+						List<Student> studentList = studentBoyMap.get(str);
+						
+						int boyStudentQueue = studentList.size() % rule.getBoyNum() == 0
+								? studentList.size() / rule.getBoyNum()
+										: studentList.size() / rule.getBoyNum() + 1;
+								// 如果不等于0并且男生集合的长度大于零说明凑不满一队，则弄为一队
+								if (boyStudentQueue == 0 && studentList.size() != 0) {
+									boyStudentQueue = 1;
+								}
+								int queue = 0;
+								if (boyStudentQueue > 0) {
+									int s = 0;
+									for (int k = 0; k < boyStudentQueue; k++) {
+										queue++;
+										for (int l = 0; l < rule.getBoyNum(); l++) {
+											s++;
+											if (s < studentList.size()) {
+												studentList.get(s).setQueue(str + "男生第" + queue + "队第" + (l + 1) + "号");
+												result.add(studentList.get(s));
+											}
+										}
+									}
+								}
 					}
 				}
-				for (String str : indexGirlNameList) {
-					if ("广州工商学院".equals(str)) {
-						continue;
-					}
-					// 得到索引值
-					List<Student> studentList = studentGirlMap.get(str);
-					int girlStudentQueue = studentList.size() % rule.getBoyNum() == 0
-							? studentList.size() / rule.getBoyNum()
-							: studentList.size() / rule.getBoyNum() + 1;
-					// 如果不等于0并且男生集合的长度大于零说明凑不满一队，则弄为一队
-					if (girlStudentQueue == 0 && studentList.size() != 0) {
-						girlStudentQueue = 1;
-					}
-					if (girlStudentQueue > 0) {
-						int s = 0;
-						int queueNum = 0;
-						for (int k = 0; k < girlStudentQueue; k++) {
-							queueNum++;
-							for (int l = 0; l < rule.getBoyNum(); l++) {
-								if (s < studentList.size()) {
-									studentList.get(s).setQueue(str + "女生第" + queueNum + "队第" + (l + 1) + "号");
-									result.add(studentList.get(s));
-								}
-								s++;
-							}
+				if(rule.getGirlNum() != 0) {
+					for (String str : indexGirlNameList) {
+						if ("广州工商学院".equals(str)) {
+							continue;
 						}
+						// 得到索引值
+						List<Student> studentList = studentGirlMap.get(str);
+						int girlStudentQueue = studentList.size() % rule.getBoyNum() == 0
+								? studentList.size() / rule.getBoyNum()
+										: studentList.size() / rule.getBoyNum() + 1;
+								// 如果不等于0并且男生集合的长度大于零说明凑不满一队，则弄为一队
+								if (girlStudentQueue == 0 && studentList.size() != 0) {
+									girlStudentQueue = 1;
+								}
+								if (girlStudentQueue > 0) {
+									int s = 0;
+									int queueNum = 0;
+									for (int k = 0; k < girlStudentQueue; k++) {
+										queueNum++;
+										for (int l = 0; l < rule.getBoyNum(); l++) {
+											if (s < studentList.size()) {
+												studentList.get(s).setQueue(str + "女生第" + queueNum + "队第" + (l + 1) + "号");
+												result.add(studentList.get(s));
+											}
+											s++;
+										}
+									}
+								}
 					}
 				}
-
+				for(Student s3 : result) {
+					if(s3.getSex() == 1) {
+						s3.setSexName("男");
+					}
+					if(s3.getSex() == 2) {
+						s3.setSexName("女");
+					}
+				}
 				logService.save(new Log(Log.SEARCH_ACTION, "生成比赛报表"));
 				map.put("code", 0);
 				map.put("msg", "");
@@ -294,22 +307,24 @@ public class StudentAdminController {
 						}
 					}
 				}
-				int forNum = boyNum % boyTeamNum == 0 ? boyNum / boyTeamNum : boyNum / boyTeamNum + 1;// 得到一个组实际上的组数
-				for (int i = 0; i < forNum; i++) {
-					s++;
-					List<Student> pStudent = new ArrayList<Student>();
-					for (int j = 0; j < boyTeamNum; j++) {
-						if(m < boyNum) {
-							pStudent.add(tmpBoyStudentList.get(m));
-							m++;
+				if(rule.getBoyNum() != 0) {
+					int forNum = boyNum % boyTeamNum == 0 ? boyNum / boyTeamNum : boyNum / boyTeamNum + 1;// 得到一个组实际上的组数
+					for (int i = 0; i < forNum; i++) {
+						s++;
+						List<Student> pStudent = new ArrayList<Student>();
+						for (int j = 0; j < boyTeamNum; j++) {
+							if(m < boyNum) {
+								pStudent.add(tmpBoyStudentList.get(m));
+								m++;
+							}
 						}
-					}
-					String radomBoyString = MathUtils.getNumberNoRepeat(pStudent.size());
-					String[] radomBoyStrings = radomBoyString.split(",");
-					for(int ii = 0 ; ii < pStudent.size(); ii++) {
-						Student ss = pStudent.get(Integer.parseInt(radomBoyStrings[ii]));
-						ss.setQueue("男生第" + s + "队第" + (ii + 1) + "号");
-						result.add(ss);
+						String radomBoyString = MathUtils.getNumberNoRepeat(pStudent.size());
+						String[] radomBoyStrings = radomBoyString.split(",");
+						for(int ii = 0 ; ii < pStudent.size(); ii++) {
+							Student ss = pStudent.get(Integer.parseInt(radomBoyStrings[ii]));
+							ss.setQueue("男生第" + s + "队第" + (ii + 1) + "号");
+							result.add(ss);
+						}
 					}
 				}
 				for(int i = 0; i < maxGirlNum; i++) {
@@ -319,25 +334,35 @@ public class StudentAdminController {
 						}
 					}
 				}
-				int forGirlNum = girlNum % girlTeamNum == 0 ? girlNum / girlTeamNum : girlNum / girlTeamNum + 1;// 得到一个组实际上的女生组数
-				for (int i = 0; i < forGirlNum; i++) {
-					s++;
-					List<Student> pStudent = new ArrayList<Student>();
-					for (int j = 0; j < girlTeamNum; j++) {
-						if(n < girlNum) {
-							pStudent.add(tmpGirlStudentList.get(n));
-							n++;
+				if(rule.getGirlNum() != 0) {
+					int forGirlNum = girlNum % girlTeamNum == 0 ? girlNum / girlTeamNum : girlNum / girlTeamNum + 1;// 得到一个组实际上的女生组数
+					for (int i = 0; i < forGirlNum; i++) {
+						s++;
+						List<Student> pStudent = new ArrayList<Student>();
+						for (int j = 0; j < girlTeamNum; j++) {
+							if(n < girlNum) {
+								pStudent.add(tmpGirlStudentList.get(n));
+								n++;
+							}
 						}
-					}
-					String radomGirlString = MathUtils.getNumberNoRepeat(pStudent.size());
-					String[] radomGirlStrings = radomGirlString.split(",");
-					for (int j = 0; j < pStudent.size(); j++) {
-						Student ss = pStudent.get(Integer.parseInt(radomGirlStrings[j]));
-						ss.setQueue("女生第" + s + "队第" + (j + 1) + "号");
-						result.add(ss);
+						String radomGirlString = MathUtils.getNumberNoRepeat(pStudent.size());
+						String[] radomGirlStrings = radomGirlString.split(",");
+						for (int j = 0; j < pStudent.size(); j++) {
+							Student ss = pStudent.get(Integer.parseInt(radomGirlStrings[j]));
+							ss.setQueue("女生第" + s + "队第" + (j + 1) + "号");
+							result.add(ss);
+						}
 					}
 				}
 				logService.save(new Log(Log.SEARCH_ACTION, "生成比赛报表"));
+				for(Student s3 : result) {
+					if(s3.getSex() == 1) {
+						s3.setSexName("男");
+					}
+					if(s3.getSex() == 2) {
+						s3.setSexName("女");
+					}
+				}
 				map.put("code", 0);
 				map.put("msg", "");
 				map.put("data", result);
@@ -366,6 +391,14 @@ public class StudentAdminController {
 								p++;
 							}
 						}
+					}
+				}
+				for(Student s3 : result) {
+					if(s3.getSex() == 1) {
+						s3.setSexName("男");
+					}
+					if(s3.getSex() == 2) {
+						s3.setSexName("女");
 					}
 				}
 				map.put("code", 0);
@@ -563,6 +596,14 @@ public class StudentAdminController {
 					}
 					
 				}
+				for(Student s3 : result) {
+					if(s3.getSex() == 1) {
+						s3.setSexName("男");
+					}
+					if(s3.getSex() == 2) {
+						s3.setSexName("女");
+					}
+				}
 				map.put("code", 0);
 				map.put("msg", "");
 				map.put("data", result);
@@ -572,7 +613,16 @@ public class StudentAdminController {
 		}
 		map.put("code", 0);
 		map.put("msg", "");
-		map.put("data", studentService.listNoPage(null));
+		List<Student> studentList2 =  studentService.listNoPage(null);
+		for(Student s3 : studentList2) {
+			if(s3.getSex() == 1) {
+				s3.setSexName("男");
+			}
+			if(s3.getSex() == 2) {
+				s3.setSexName("女");
+			}
+		}
+		map.put("data", studentList2);
 		logService.save(new Log(Log.SEARCH_ACTION, "生成比赛报表"));
 		return map;
 	}
@@ -736,7 +786,6 @@ public class StudentAdminController {
 			}
 		}
 		logService.save(new Log(Log.SEARCH_ACTION, "获取详细信息"));
-
 		return map;
 	}
 
@@ -756,8 +805,23 @@ public class StudentAdminController {
 			@RequestParam(value = "address", required = false) String address) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<StudentBean> studentBeanList = new ArrayList<StudentBean>();
+		Map<String, Integer> nameAndNumMap = new HashMap<String, Integer>();
 		// 获取项目名称
 		Project project = projectService.findById(projectId);
+		int count = 0;
+		//获取到一个系可以报多少个男生，多少个女生
+		if(StringUtils.isNotEmpty(project.getCollegeOrDepartmentNum())) {
+			String[] collegeOrDepartmentNums = project.getCollegeOrDepartmentNum().split(",");
+			for (String string : collegeOrDepartmentNums) {
+				count++;
+				String[] nameAndNum = string.split(":");
+				try {
+					nameAndNumMap.put(nameAndNum[0], Integer.parseInt(nameAndNum[1]));
+				}catch(Exception e) {
+					nameAndNumMap.put(nameAndNum[0], 0);
+				}
+			}
+		}
 		// 获取全部系部
 		String y = address.replace(",", "");
 		List<Department> departmentList = departmentService.listAll();
@@ -783,10 +847,16 @@ public class StudentAdminController {
 				s_student.setProjectName(teamName);
 				s_student.setAddr(y);
 				if (i == 0) {
-					studnetBean.setSex1(studentService.listNoPage(s_student).size());
+					studnetBean.setTrueBoyNum(studentService.listNoPage(s_student).size());
 				} else {
-					studnetBean.setSex2(studentService.listNoPage(s_student).size());
+					studnetBean.setTrueGirlNUm(studentService.listNoPage(s_student).size());
 				}
+			}
+			if(nameAndNumMap.get((department.getName() + 1)) != null) {
+				studnetBean.setSex1(nameAndNumMap.get((department.getName() + 1)));
+			}
+			if(nameAndNumMap.get((department.getName() + 2)) != null) {
+				studnetBean.setSex2(nameAndNumMap.get((department.getName() + 2)));
 			}
 			studentBeanList.add(studnetBean);
 		}
@@ -800,9 +870,15 @@ public class StudentAdminController {
 				s_student.setSex(sex[i]);
 				s_student.setProjectName(teamName);
 				if (i == 0) {
-					studnetBean.setSex1(studentService.listNoPage(s_student).size());
+					studnetBean.setTrueBoyNum(studentService.listNoPage(s_student).size());
 				} else {
-					studnetBean.setSex2(studentService.listNoPage(s_student).size());
+					studnetBean.setTrueGirlNUm(studentService.listNoPage(s_student).size());
+				}
+				if(nameAndNumMap.get((college.getName() + 1)) != null) {
+					studnetBean.setSex1(nameAndNumMap.get((college.getName() + 1)));
+				}
+				if(nameAndNumMap.get((college.getName() + 2)) != null) {
+					studnetBean.setSex2(nameAndNumMap.get((college.getName() + 2)));
 				}
 			}
 			studentBeanList.add(studnetBean);
@@ -872,10 +948,12 @@ public class StudentAdminController {
 			@RequestParam(value = "collegeId", required = false) Integer collegeId,
 			@RequestParam(value = "departmentId", required = false) Integer departmentId,
 			@RequestParam(value = "address", required = false) String address,
-			@RequestParam(value = "projectNum", required = false) Integer projectNum) throws Exception {
+			@RequestParam(value = "projectNum", required = false) Integer projectNum,
+			@RequestParam(value = "yearStr", required = false) String yearStr) throws Exception {
 		if (projectNum != null) {
 			Project project = projectService.findById(projectNum);
-			student.setProjectName(project.getName());
+			String projectName = DateUtils.getCurrentYear() + project.getName();
+			student.setProjectName(projectName);
 		}
 		if (collegeId != null) {
 			College college = collegeService.findById(collegeId);
@@ -894,6 +972,9 @@ public class StudentAdminController {
 		}
 		if (StringUtils.isNotEmpty(address)) {
 			student.setAddr(address);
+		}
+		if (StringUtils.isNotEmpty(yearStr)) {
+			student.setYear(yearStr);
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Student> studentList = studentService.list(student, page, limit, Direction.DESC, "time");
@@ -939,6 +1020,7 @@ public class StudentAdminController {
 					if (StringUtils.isNotEmpty(student2.getTrueName())) {
 						student2.setName(student2.getTrueName());
 					}
+					student2.setYear(DateUtils.getCurrentYear());
 					student2.setAddr(address);
 					student2.setTime(new Date());
 					student2.setCollege(collegeName);
@@ -1013,6 +1095,9 @@ public class StudentAdminController {
 			studentService.save(oldStudent);
 			logService.save(new Log(Log.UPDATE_ACTION, "修改学生" + oldStudent));
 		} else {
+			student.setTime(new Date());
+			student.setProjectName(" ");
+			student.setYear(DateUtils.getCurrentYear());
 			studentService.save(student);
 			logService.save(new Log(Log.ADD_ACTION, "添加学生" + student));
 		}

@@ -9,6 +9,10 @@ public class StudentBean {
 	private Integer sex1;
 	
 	private Integer sex2;
+	
+	private Integer trueBoyNum;
+	
+	private Integer trueGirlNUm;
 
 	public String getDepartment() {
 		return department;
@@ -42,6 +46,21 @@ public class StudentBean {
 		this.sex2 = sex2;
 	}
 
+	public Integer getTrueBoyNum() {
+		return trueBoyNum;
+	}
+
+	public void setTrueBoyNum(Integer trueBoyNum) {
+		this.trueBoyNum = trueBoyNum;
+	}
+
+	public Integer getTrueGirlNUm() {
+		return trueGirlNUm;
+	}
+
+	public void setTrueGirlNUm(Integer trueGirlNUm) {
+		this.trueGirlNUm = trueGirlNUm;
+	}
 	
 	
 }

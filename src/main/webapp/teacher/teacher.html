@@ -274,7 +274,7 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
             var layEvent  = obj.event;
             switch (layEvent) {
                 case 'del':
-                    layer.confirm('确定要删除该用户？', function(index){
+                    layer.confirm('确定要删除该教师', function(index){
                         $.post("/admin/teacher/delete",{id:data.id},function (ret) {
                             if(ret.success){
                                 layer.msg('删除成功', function () {

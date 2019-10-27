@@ -60,6 +60,9 @@ public class Project {
 	@Column(length = 1000)
 	private String remarks;		//备注
 	
+	@Column(length = 300)
+	private String collegeOrDepartmentNum;//二级学院:30,计算机系:50
+	
 	@Transient
 	private String eTime;
 	
@@ -70,8 +73,8 @@ public class Project {
 	public String toString() {
 		return "Project [id=" + id + ", name=" + name + ", totalPerson=" + totalPerson + ", teacher=" + teacher
 				+ ", coach=" + coach + ", startTime=" + startTime + ", time=" + time + ", year=" + year + ", state="
-				+ state + ", pid=" + pid + ", addr=" + addr + ", remarks=" + remarks + ", eTime=" + eTime + ", bTime="
-				+ bTime + "]";
+				+ state + ", pid=" + pid + ", addr=" + addr + ", remarks=" + remarks + ", collegeOrDepartmentNum="
+				+ collegeOrDepartmentNum + ", eTime=" + eTime + ", bTime=" + bTime + "]";
 	}
 
 	public Integer getId() {
@@ -178,6 +181,22 @@ public class Project {
 
 	public void setPid(Integer pid) {
 		this.pid = pid;
+	}
+
+	public String getAddr() {
+		return addr;
+	}
+
+	public void setAddr(String addr) {
+		this.addr = addr;
+	}
+
+	public String getCollegeOrDepartmentNum() {
+		return collegeOrDepartmentNum;
+	}
+
+	public void setCollegeOrDepartmentNum(String collegeOrDepartmentNum) {
+		this.collegeOrDepartmentNum = collegeOrDepartmentNum;
 	}
 	
 }

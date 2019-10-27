@@ -18,7 +18,7 @@ import vip.wukong.entity.Student;
 public interface StudentRepository extends JpaRepository<Student, Integer>, JpaSpecificationExecutor<Student> {
 
 	@Query(value = "select * from t_student where name = ?1", nativeQuery = true)
-	public Student findByStudentName(String studentName);
+	public List<Student> findByStudentName(String studentName);
 	
 	@Query(value = "select * from t_student where college = ?1", nativeQuery = true)
 	public List<Student> findByCollegeName(String name);
@@ -29,4 +29,9 @@ public interface StudentRepository extends JpaRepository<Student, Integer>, JpaS
 	@Query(value = "select * from t_student where addr = ?1", nativeQuery = true)
 	public List<Student> findBySchoolAddrName(String name);
 	
-}
+	@Query(value = "select * from t_student where true_name = ?1", nativeQuery = true)
+	public List<Student> findByTrueName(String trueName);
+	
+	@Query(value = "SELECT * FROM t_student WHERE true_name = ?1  AND grade like ?2 ", nativeQuery = true)
+	public List<Student> findByNameAndGrade(String trueName, String grade);
+} 

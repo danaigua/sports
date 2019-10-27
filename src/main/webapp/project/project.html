@@ -25,22 +25,14 @@
 			.project-box>.layui-row {
 				height: 100%;
 			}
-
-
-
 			.row-box:nth-child(1) {}
-
 			.row-box:nth-child(2)>div {
 				height: 50%;
 			}
-
-
-
 			/* 右上角 */
 			.total-text {
 				margin-top: 20px;
 			}
-
 			.total-box {
 				height: 100%;
 				padding: 20px;
@@ -186,7 +178,7 @@
 			 <div class="layui-form-item">
     			<label class="layui-form-label">项目名称</label>
     			<div class="layui-input-block">
-      				<input type="text" name="name" autocomplete="off" placeholder="请输入标题" class="layui-input tip-input">
+      				<input type="text" name="name" autocomplete="off" placeholder="请输入" class="layui-input tip-input">
     			</div>
     			<div class="layui-inline department1 firstDepartment">
     			</div>
@@ -291,18 +283,24 @@
 						if("广州工商学院" === res[prop]){
 							continue;
 						}
-						$(".department1").append('<div class=' + 'layui-inline' + '><label class="layui-form-label department">'+res[prop] + "可报名人数" +'</label>'+
+						$(".department1").append('<div class=' + 'layui-inline' + '><label class="layui-form-label department projectNumber">'+res[prop] + "男生可报名人数" +'</label>'+
 								'<div class='+'layui-input-inline'+'>'+'<input type='+'number'+' name='+'studentNumber' +
-								'autocomplete='+ 'off' + ' class=' + 'layui-input ' + '></div></div>');
+								'autocomplete='+ 'off' + ' class="layui-input strText"' + '></div></div>');
+						$(".department1").append('<div class=' + 'layui-inline' + '><label class="layui-form-label department projectNumber">'+res[prop] + "女生可报名人数" +'</label>'+
+								'<div class='+'layui-input-inline'+'>'+'<input type='+'number'+' name='+'studentNumber' +
+								'autocomplete='+ 'off' + ' class="layui-input strText"' + '></div></div>');
 					}
 					
 				});
 		$.post("/admin/department/combobox",
 				function (res){
 					for(let prop in res){
-						$(".department1").append('<div class=' + 'layui-inline' + '><label class="layui-form-label department">'+res[prop]+ "可报名人数" +'</label>'+
+						$(".department1").append('<div class=' + 'layui-inline' + '><label class="layui-form-label department projectNumber">'+res[prop]+ "男生可报名人数" +'</label>'+
 								'<div class='+'layui-input-inline'+'>'+'<input type='+'number'+' name='+'studentNumber' +
-								'autocomplete='+ 'off' + ' class=' + 'layui-input ' + '></div></div>');
+								'autocomplete='+ 'off' + ' class="layui-input strText"' + '></div></div>');
+						$(".department1").append('<div class=' + 'layui-inline' + '><label class="layui-form-label department projectNumber">'+res[prop]+ "女生可报名人数" +'</label>'+
+								'<div class='+'layui-input-inline'+'>'+'<input type='+'number'+' name='+'studentNumber' +
+								'autocomplete='+ 'off' + ' class="layui-input strText"' + '></div></div>');
 						
 						
 					}
@@ -466,15 +464,29 @@
 						    	        ,btn: ['提交', '关闭'] //只是为了演示
 						    	        ,yes: function(){
 						    	          let value = [];
-						    	          
+						    	          let projectNum = "";
+						    	          let trueNum = "";
 						    	          for(let i = 0; i < $(".tip-input").length; i ++){
 						    	        	  value[i] = $(".tip-input").eq(i).val();
 						    	          };
+						    	          for(let j = 0; j < $(".projectNumber").length; j ++) {
+						    	        	  let number = $(".projectNumber").eq(j).text().indexOf('可');
+						    	        	 
+						    	        	  let nameNum = $(".projectNumber").eq(j).text().substring(0,number);
+						    	        	  if(nameNum.includes('男生')) {
+						    	        		 trueNum = nameNum.replace('男生', '1')
+						    	        	  } else {
+						    	        		 trueNum = nameNum.replace('女生', '2')
+						    	        	  }
+						    	        	  projectNum += (trueNum
+					    	        	  				+ ":" + $(".strText").eq(j).val() + ",")
+						    	          }
 						    	          $.post("/admin/project/save",
 						    	        	{
 						    	        	  parentId : id,
 						    	        	  projectName : value[0],  // 账号
-						    	        	  remarks : value[1]  // 备注
+						    	        	  remarks : value[1],  // 备注
+						    	          	  collegeOrProjectNum: projectNum // 拼接字符串
 						    	        	},
 						    	        	function (res) {
 						    	        		if(res.success){
@@ -536,18 +548,26 @@
 							title: '系部名称'
 						}, {
 							field: 'sex1',
-							width: 160,
-							title: '男生参赛人数',
+							width: 120,
+							title: '男可参赛人数',
 							sort: true
 						}, {
 							field: 'sex2',
-							width: 160,
-							title: '女生参赛人数'
+							width: 120,
+							title: '女可参赛人数'
+						}, {
+							field: 'trueBoyNum',
+							width: 120,
+							title: '男实参赛人数'
+						}, {
+							field: 'trueGirlNUm',
+							width: 120,
+							title: '女实参赛人数'
 						},{
 							fixed: 'right', 
 							title:'操作', 
 							toolbar: '#barDemo', 
-							width:160}]
+							width:120}]
 					],
 				});
 				
@@ -580,7 +600,6 @@
 		        form.on('submit(LAY-user-front-search)', function(data){
 					 schoolData = $(".schoolData").val();
 					 schoolYear = $(".schoolYear").val();
-		        	console.log(schoolData,schoolYear)
 		         	 var field = data.field;
 		          //执行重载
 		          table.reload('test', {

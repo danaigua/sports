@@ -89,6 +89,10 @@ public class StudentServiceImpl implements StudentService {
 						predicate.getExpressions()
 								.add(cb.like(root.get("department"), "%" + student.getDepartment() + "%"));
 					}
+					if (StringUtils.isNotEmpty(student.getYear())) {
+						predicate.getExpressions()
+								.add(cb.equal(root.get("year"), student.getYear()));
+					}
 					if (StringUtils.isNotEmpty(student.getAddr())) {
 						predicate.getExpressions().add(cb.equal(root.get("addr"), student.getAddr()));
 					}
@@ -108,7 +112,11 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public Student findByStudentName(String studnetName) {
 		// TODO Auto-generated method stub
-		return studentRepository.findByStudentName(studnetName);
+		if(studentRepository.findByStudentName(studnetName).size() > 0) {
+			return studentRepository.findByStudentName(studnetName).get(0);
+		}else {
+			return null;
+		}
 	}
 
 	@Override
@@ -143,13 +151,19 @@ public class StudentServiceImpl implements StudentService {
 						predicate.getExpressions().add(cb.equal(root.get("grade"), student.getGrade()));
 					}
 					if (StringUtils.isNotEmpty(student.getProjectName())) {
-						predicate.getExpressions().add(cb.like(root.get("projectName"), "%" + student.getProjectName() + "%"));
+						predicate.getExpressions()
+								.add(cb.like(root.get("projectName"), "%" + student.getProjectName() + "%"));
 					}
 					if (StringUtils.isNotEmpty(student.getCollege())) {
 						predicate.getExpressions().add(cb.like(root.get("college"), "%" + student.getCollege() + "%"));
 					}
 					if (StringUtils.isNotEmpty(student.getDepartment())) {
-						predicate.getExpressions().add(cb.like(root.get("department"), "%" + student.getDepartment() + "%"));
+						predicate.getExpressions()
+								.add(cb.like(root.get("department"), "%" + student.getDepartment() + "%"));
+					}
+					if (StringUtils.isNotEmpty(student.getYear())) {
+						predicate.getExpressions()
+								.add(cb.equal(root.get("year"), student.getYear()));
 					}
 					if (StringUtils.isNotEmpty(student.getAddr())) {
 						predicate.getExpressions().add(cb.equal(root.get("addr"), student.getAddr()));
@@ -257,6 +271,26 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public List<Student> findBySchoolAddrName(String name) {
 		return studentRepository.findBySchoolAddrName(name);
+	}
+
+	@Override
+	public boolean findByTrueName(String trueName) {
+		// TODO Auto-generated method stub
+		List<Student> studentList = studentRepository.findByTrueName(trueName);
+		if(studentList.size() == 0) {
+			return false;
+		}else {
+			return true;
+		}
+		
+	}
+
+	@Override
+	public Student findByNameAndGrade(String trueName, String grade) {
+		// TODO Auto-generated method stub
+		grade = "%" + grade + "%";
+		List<Student> studentList = studentRepository.findByNameAndGrade(trueName, grade);
+		return studentList.get(0);
 	}
 
 }

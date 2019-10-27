@@ -28,7 +28,7 @@ public class MyRealm extends AuthorizingRealm {
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		String userName = (String) SecurityUtils.getSubject().getPrincipal();
-		Student student = studentRepository.findByStudentName(userName);
+		Student student = studentRepository.findByStudentName(userName).get(0);
 		Teacher teacher = teacherRepository.findByTeacherName(userName);
 		return null;
 	}
@@ -36,7 +36,7 @@ public class MyRealm extends AuthorizingRealm {
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		String userName = (String) token.getPrincipal();
-		Student student = studentRepository.findByStudentName(userName);
+		Student student = studentRepository.findByStudentName(userName).get(0);
 		Teacher teacher = teacherRepository.findByTeacherName(userName);
 		if(teacher != null) {
 			AuthenticationInfo authInfo = new SimpleAuthenticationInfo(teacher.getName(), teacher.getPassword(), "xxx");

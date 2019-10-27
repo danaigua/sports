@@ -85,4 +85,17 @@ public interface StudentService {
 	 * @return
 	 */
 	public List<Student> findBySchoolAddrName(String name);
+	/**
+	 * 通过真实姓名查找实体是否存在
+	 * @param trueName
+	 * @return
+	 */
+	public boolean findByTrueName(String trueName);
+	/**
+	 * 通过年级和真实姓名查询
+	 * @param trueName
+	 * @param grade
+	 * @return
+	 */
+	public Student findByNameAndGrade(String trueName, String grade);
 }

@@ -87,25 +87,25 @@
     			<div class="layui-inline">
       				<label class="layui-form-label">组数</label>
       				<div class="layui-input-inline">
-       			 		<input type="number" name="groupNum"  autocomplete="off" class="layui-input tip-input">
+       			 		<input type="number" name="groupNum"  autocomplete="off" class="layui-input  tip-input">
       				</div>
     			</div>
     			<div class="layui-inline first">
       				<label class="layui-form-label">男生人数</label>
       				<div class="layui-input-inline">
-       			 		<input type="number" name="boyNum"  autocomplete="off" class="layui-input tip-input">
+       			 		<input type="number" name="boyNum"  autocomplete="off" class="layui-input  tip-input">
       				</div>
     			</div>
     			<div class="layui-inline first">
       				<label class="layui-form-label">女生人数</label>
       				<div class="layui-input-inline">
-       			 		<input type="number" name="girlNum"  autocomplete="off" class="layui-input tip-input">
+       			 		<input type="number" name="girlNum"  autocomplete="off" class="layui-input  tip-input">
       				</div>
     			</div>
     			<div class="layui-inline second">
       				<label class="layui-form-label">每组人数</label>
       				<div class="layui-input-inline">
-       			 		<input type="number" name="studentNum"  autocomplete="off" class="layui-input tip-input">
+       			 		<input type="number" name="studentNum"  autocomplete="off" class="layui-input  tip-input">
       				</div>
     			</div>
     		</div>
@@ -228,7 +228,7 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
             var layEvent  = obj.event;
             switch (layEvent) {
                 case 'del':
-                    layer.confirm('确定要删除该用户？', function(index){
+                    layer.confirm('确定要删除该规则？', function(index){
                         $.post("/admin/rule/delete",{id:data.id},function (ret) {
                             if(ret.success){
                                 layer.msg('删除成功', function () {
@@ -254,12 +254,27 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
                 ,field = obj.field; //得到字段
             $.post("/admin/rule/save",{id:data.id, field:field, value:value},function (ret) {
                 if (ret.success){
-                    layer.msg('[ID: '+ data.userId +'] ' + field + ' 字段更改为：'+ value);
+                    layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
                 }else{
                     layer.msg(ret.errorInfo);
                 }
             });
         });
+    });
+    layui.use(['form', 'layedit', 'laydate'], function() {
+    	var form = layui.form;
+    	form.render();
+    	form.on('select(isSex)', function(data) {
+    		var val = data.value;
+    		console.log(val);
+    		if(val == 2){
+    			$(".first").css("display", "none");
+    			$(".second").css("display", "block");
+    		}else if(val == 1){
+    			$(".second").css("display", "none");
+    			$(".first").css("display", "block");
+    		}
+    	});
     });
 </script>
 </body>

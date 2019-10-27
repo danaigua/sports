@@ -18,7 +18,16 @@
 		    	    		};
 		    	    		form.render();
 		    	    	});
-		    	
+		    	// 项目名称
+		    	$.post("/admin/project/combobox",
+		    	    	{},
+		    	    	function (res) {
+		    	    		console.log(res)
+		    	    		for(let prop in res) {
+		    	    	    		$(".form-theme").eq(3).append(`<option value=` + prop + `>` + res[prop] +`</option>`)
+		    	    		};
+		    	    		form.render();
+		    	    	});
                 form.render('select');   //表单渲染，得渲染才会有效果显示出来
             })
 var info = $(".form-infor"); // 学生个人信息条
@@ -53,6 +62,7 @@ let infoObj = {
 	address : "", //校区
 	college : "", // 系部
 	department : "", // 领队
+	projectId : "" // 项目名称
 };
 
 function preserInfo() { // 当用户点击保存时，把所有的数据保存
@@ -65,6 +75,8 @@ function preserInfo() { // 当用户点击保存时，把所有的数据保存
 				infoObj.department = info.eq(i).val();
 			} else if (i === 2) {
 				infoObj.address = info.eq(i).val();
+			}  else if (i === 3) {
+				infoObj.projectId = info.eq(i).val();
 			}
 		};
 	};
@@ -200,7 +212,7 @@ function closeTip() {
 
 // 跳转到下一步页面
 function next() {
-	window.location.href = "project.html";
+	window.location.href = "checkName.html";
 };
 
 // 进度条
@@ -212,10 +224,11 @@ layui.use('element', function() {
 	var active = {
 		loading: function(othis) {
 			console.log(1);
-			$.post("/admin/student/save",{
+			$.post("/student/save",{
 				collegeName:commonInfo[0].college,
 				departmentName : commonInfo[0].department,
 				address:commonInfo[0].address,
+				projectId:commonInfo[0].projectId,
 				studentJson:JSON.stringify(infoArr)},function(res){
 					$('.submitName').removeAttr('data-type');
 					if(!res.success){
@@ -256,9 +269,9 @@ layui.use('element', function() {
 						clearInterval(timer);
 						othis.removeClass(DISABLED); // 移除禁止按钮样式
 						prog.css("display", "none"); // 进度条隐藏
-						tipText.text("<strong>提交成功!</strong><br>点击下一步进行项目报名!");
+						tipText.text("<strong>提交成功!</strong><br>");
 						othis.remove();
-						$('.bnt-next').css('display', 'block')
+						$(".bnt-close").css('display', 'none')
 					};
 					element.progress('demo', sum + '%');
 					// }
@@ -271,9 +284,10 @@ layui.use('element', function() {
 							clearInterval(timer)
 							othis.removeClass(DISABLED); // 移除禁止按钮样式
 							prog.css("display", "none"); // 进度条隐藏
-							tipText.html("<strong>提交成功!</strong><br>点击下一步进行项目报名!");
+							tipText.html("<strong>提交成功!</strong><br>");
 							othis.remove();
-							$('.bnt-next').css('display', 'block')
+							$(".bnt-close").css('display', 'none')
+							$(".refresh").css('display','block')
 						}
 						element.progress('demo', sum + '%');
 					}())

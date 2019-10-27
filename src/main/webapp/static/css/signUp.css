@@ -33,6 +33,9 @@ body{
 /**
  * 填写个人信息开始 
  */
+.webProject{
+ 	width:90px;
+ }
 .coach-tip{
 	display:inline-block;
 	margin-top:8px;
@@ -120,6 +123,9 @@ body{
  * 填写个人信息结束
  */
 /* 提示框开始 */
+.refresh{
+	display:none;	
+}
 .bnt-next{
 	display:none;
 }
@@ -161,17 +167,11 @@ body{
 	padding:16px;
 	border-top:1px solid #ccc;
 }
+
 .tip > .box-spaing button:nth-child(1){
-	margin-right:50px;
 	background:#ccc;
 	color:#333;
-	
-}
-.tip > .box-spaing button:nth-child(1){
 	margin-right:50px;
-	background:#ccc;
-	color:#333;
-	
 }
 .progress{
 	display:none;

@@ -79,6 +79,9 @@ public class Student {
 	
 	@Transient
 	private String queue;//队伍信息
+	
+	@Column(length = 100)
+	private String year;//设置年度
 
 	public Integer getId() {
 		return id;
@@ -254,6 +257,14 @@ public class Student {
 
 	public void setQueue(String queue) {
 		this.queue = queue;
+	}
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
 	}
 	
 }

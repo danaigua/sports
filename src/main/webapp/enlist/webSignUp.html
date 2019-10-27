@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, inital-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE-edge">
+		<title>参赛选手录入</title>
+		<link href="../static/libs/bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link rel="stylesheet" href="../static/css/base.css">
+		<link rel="stylesheet" href="../static/libs/layui/css/layui.css">
+		<link href="../static/css/signUp.css" rel="stylesheet">
+	</head>
+	<body>
+		<div id="sign">
+			<div class="background"></div>
+			<div class="tip">
+				
+				<h4>参赛人员 <i class="glyphicon glyphicon-remove closeIcon" onclick="closeTip()"></i></h4>
+				<div class="tipText">
+					<p class="text-content">是否提交学生名单 ?</p>
+					<div class="layui-progress layui-progress-big progress" lay-filter="demo" lay-showpercent="true">
+						<div class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>
+					</div>
+				</div>
+				<div class="box-spaing">
+					<form action="" class="form-tip">
+					<button onclick="closeTip()" type='button' class="bnt-close">取消</button>
+					<button class="submitName" type='button' data-type="loading">确定</button>
+					<button class='refresh' type="submit">确定</button>
+					</form>
+				</div>
+				
+			</div>
+			<!--填写个人信息开始-->
+			<section class="information">
+				<div class="infor-box">
+					<form class="layui-form">
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<label class="layui-form-label">学院</label>
+								<div class="layui-input-inline">
+									<select name="collegeName" class="form-theme">
+										<option value="">请选择</option>
+									</select>
+								</div>
+							</div>
+							<div class="layui-inline">
+							<label class="layui-form-label">系部</label>
+								<div class="layui-input-inline">
+									<select name="departmentName" class="form-theme">
+										<option value="">请选择</option>
+									</select>
+								</div>
+							</div>
+							
+							<div class="layui-inline">
+								<label class="layui-form-label">校区</label>
+								<div class="layui-input-inline">
+								<select name="address" class="form-theme">
+									<option value="">请选择</option>
+									<option value="花都校区">花都校区</option>
+									<option value="三水校区">三水校区</option>
+								</select>
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label webProject">项目名称</label>
+								<div class="layui-input-inline">
+								<select name="projectId" class="form-theme">
+									<option value="">请选择</option>
+								</select>
+								</div>
+							</div>
+						</div>
+						<!--学生信息-->
+						<div class="form-title">
+							<ul class="row">
+								<li class="col-md-3 text-center">姓名</li>
+								<li class="col-md-3 text-center">班级</li>
+								<li class="col-md-3 text-center">年级</li>
+								<li class="col-md-1 text-center">性别</li>
+							</ul>
+						</div>
+						<div class="form-infor">
+							<ul class="row">
+								<li class="col-md-3 text-center input-first"><i class="number addInfo">1</i><input type="text" name="name" class="layui-input" id="exampleInputName2"
+									 placeholder="姓名"></li>
+								<li class="col-md-3 text-center"><input name="clazz" type="text" class="layui-input" id="exampleInputName2" placeholder="班级"></li>
+								<li class="col-md-3 text-center"><input name="grade" type="text" class="layui-input" id="exampleInputName2" placeholder="年级"></li>
+								<li class="col-md-1 text-center">
+									<input list="browsers" name="sexName" class="form-control layui-input">
+									<datalist id="browsers">
+										<option value="男">
+										<option value="女">
+									</datalist>
+								</li>
+								<li class="col-md-2 text-center add-box"><i class="addInfo add" data-index="1" onclick="addStudent(this)">+</i></li>
+							</ul>
+						</div>
+						<input type="hidden" name="studentJson" class="studentJson" />
+						<div class="box-spaing">
+							<button type="button" class="preservation">提交名单</button>
+						</div>
+						
+					</form>
+				</div>
+			</section>
+			<!--填写个人信息结束-->
+		</div>
+
+		<script src="../static/libs/jquery/jquery.js"></script>
+		<script src="../static/libs/bootstrap/js/bootstrap.js"></script>
+		<script src="../static/libs/layui/layui.js"></script>
+		<<script src="../static/js/webSignUp.js">
+			</script>
+	</body>
+</html>

@@ -1,0 +1,25 @@
+h2{
+	font-size:20px;
+	text-align:center;
+	padding:20px 0 30px 0;
+	font-weight:bold;
+}
+.form-submit{
+	margin-left:110px;
+}
+@media (max-width:768px) {
+	.layui-container{
+		text-align:center;
+	}
+}
+.layui-container{
+	height: 100%;
+    background: #f1f1f1;
+}
+.layui-form-select, .layui-input{
+	width:233px;
+}
+.layui-input{
+	
+	background:rgba(255,255,255,.6);
+}
